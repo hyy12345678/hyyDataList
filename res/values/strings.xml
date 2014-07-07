@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dear List</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="add_new">Add New Item</string>
+    <string name="search">Search</string>
+    <string name="hint_title">Please input a title</string>
+    <string name="hint_shortcut">Please input a shortcut</string>
+    <string name="hint_content">Say something</string>
+    <string name="save_alarm">Save Alarm</string>
+    <string name="title_activity_alarm_message">AlarmMessage</string>
+    <string name="action_photo">Take a picture</string>
+    <string name="action_weather">See weather</string>
+    <string name="pause_alarm">Pause Alarm</string>
+	<string name="resume_alarm">Resume Alarm</string>
+	<string name="toggle_on">ON</string>
+	<string name="toggle_off">OFF</string>
+</resources>

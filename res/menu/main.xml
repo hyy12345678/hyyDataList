@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:hyyDataList="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
+    <item
+        android:id="@+id/action_photo"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_photo"/>
+    
+    <item
+        android:id="@+id/action_weather"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_weather"/>
+    
+    <item
+        android:id="@+id/action_add"
+        android:title="@string/add_new"
+        hyyDataList:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_new"/>
+
+</menu>
