@@ -26,7 +26,8 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 	private List<HyyMessage> list;
 	private List<HyyMessage> listWhole;
 	private Handler handler;
-
+	
+	
 	public HyyDataListAdapter(Context context, Handler handler) {
 		// TODO Auto-generated constructor stub
 		this.mContext = context;
