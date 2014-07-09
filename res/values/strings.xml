@@ -14,7 +14,15 @@
     <string name="action_photo">Take a picture</string>
     <string name="action_weather">See weather</string>
     <string name="pause_alarm">Pause Alarm</string>
-	<string name="resume_alarm">Resume Alarm</string>
-	<string name="toggle_on">ON</string>
-	<string name="toggle_off">OFF</string>
+    <string name="resume_alarm">Resume Alarm</string>
+    <string name="toggle_on">ON</string>
+    <string name="toggle_off">OFF</string>
+    <string name="day0">Sunday</string>
+    <string name="day1">Monday</string>
+    <string name="day2">Tuesday</string>
+    <string name="day3">Wednesday</string>
+    <string name="day4">Thursday</string>
+    <string name="day5">Friday</string>
+    <string name="day6">Saturday</string>
+
 </resources>

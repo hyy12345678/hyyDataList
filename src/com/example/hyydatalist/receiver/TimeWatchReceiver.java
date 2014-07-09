@@ -29,22 +29,14 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+
 		// TODO Auto-generated method stub
-
-		Calendar curCal = Calendar.getInstance();
-
-		String strHour = String.valueOf(curCal.get(Calendar.HOUR_OF_DAY));
-		String strMinute = String.valueOf(curCal.get(Calendar.MINUTE));
-
 		List<HyyAlarm> alarms = DatabaseManager.getInstance(
 				HyyDLApplication.getContext()).queryAlarms();
 
 		for (HyyAlarm alarm : alarms) {
 			if (null != alarm.getAlarmTime()) {
-
-				String[] alarmHourTime = alarm.getAlarmTime().split(":");
-				if (strHour.equals(alarmHourTime[0])
-						&& strMinute.equals(alarmHourTime[1])) {
+				if (decideHitted(alarm)) {
 					Toast.makeText(HyyDLApplication.getContext(),
 							"It is the time! " + alarm.getAlarmTime(),
 							Toast.LENGTH_SHORT).show();
@@ -56,14 +48,31 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 		}
 	}
 
+	private boolean decideHitted(HyyAlarm alarm) {
+		// TODO Auto-generated method stub
+		Calendar curCal = Calendar.getInstance();
+		String strHour = String.valueOf(curCal.get(Calendar.HOUR_OF_DAY));
+		String strMinute = String.valueOf(curCal.get(Calendar.MINUTE));
+		int intDay = curCal.get(Calendar.DAY_OF_WEEK); // sun=1,mon=2,...,sat=7
+
+		String[] alarmHourTime = alarm.getAlarmTime().split(":");
+		String[] alarmDays = alarm.getDayOfWeek().split(":");
+
+		boolean isTimeHitted = strHour.equals(alarmHourTime[0])
+				&& strMinute.equals(alarmHourTime[1]);
+
+		boolean isDayHitted = "1".equals(alarmDays[intDay - 1]);
+
+		return isTimeHitted && isDayHitted;
+	}
+
 	private void startNotification(String messageId) {
 
 		findItemById(messageId);
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				HyyDLApplication.getContext()).setSmallIcon(R.drawable.panda)
-				.setContentTitle(title)
-				.setContentText(shortcut);
+				.setContentTitle(title).setContentText(shortcut);
 		// Creates an explicit intent for an Activity in your app
 		Intent resultIntent = new Intent(HyyDLApplication.getContext(),
 				MainActivity.class);
@@ -85,7 +94,7 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 		NotificationManager mNotificationManager = (NotificationManager) HyyDLApplication
 				.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
-		
+
 		Notification noti = mBuilder.build();
 		noti.flags = Notification.FLAG_AUTO_CANCEL;
 		noti.flags |= Notification.FLAG_INSISTENT;

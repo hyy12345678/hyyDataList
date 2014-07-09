@@ -4,38 +4,92 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <DatePicker 
-        android:id="@+id/dpPicker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    
     <TimePicker
         android:id="@+id/tpPicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </TimePicker>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.example.hyydatalist.view.AutoExtViewGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/day0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_day_unselected"
+                android:text="@string/day0" />
+
+            <TextView
+                android:id="@+id/day1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_day_unselected"
+                android:text="@string/day1" />
+
+            <TextView
+                android:id="@+id/day2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_day_unselected"
+                android:text="@string/day2" />
+
+            <TextView
+                android:id="@+id/day3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_day_unselected"
+                android:text="@string/day3" />
+
+            <TextView
+                android:id="@+id/day4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_day_unselected"
+                android:text="@string/day4" />
+
+            <TextView
+                android:id="@+id/day5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_day_unselected"
+                android:text="@string/day5" />
+
+            <TextView
+                android:id="@+id/day6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_day_unselected"
+                android:text="@string/day6" />
+        </com.example.hyydatalist.view.AutoExtViewGroup>
+    </LinearLayout>
+
     <Button
         android:id="@+id/btnSaveAlarm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:text="@string/save_alarm">
+        android:layout_height="wrap_content"
+        android:text="@string/save_alarm" >
     </Button>
-    
+
     <Button
         android:id="@+id/btnPauseAlarm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:text="@string/pause_alarm"
-        android:visibility="gone">
+        android:visibility="gone" >
     </Button>
-      
+
     <Button
         android:id="@+id/btnResumeAlarm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:text="@string/resume_alarm"
-        android:visibility="gone">
+        android:visibility="gone" >
     </Button>
 
 </LinearLayout>

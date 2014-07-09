@@ -8,4 +8,6 @@ public class HyyConstants {
 	public final static String ALARM_STATUS_ONE = "1";
 	
 	public final static int REFRESH_LIST = 1;
+	
+	public final static String HYY_TAG ="hyy"; 
 }
