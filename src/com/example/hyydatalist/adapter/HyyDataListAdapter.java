@@ -18,7 +18,9 @@ import com.example.hyydatalist.R;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.constants.HyyConstants;
 import com.example.hyydatalist.database.DatabaseManager;
+import com.example.hyydatalist.model.HyyAlarm;
 import com.example.hyydatalist.model.HyyMessage;
+import com.example.hyydatalist.utils.StringTranslateUtil;
 import com.example.hyydatalist.viewholder.ViewHolder;
 
 public class HyyDataListAdapter extends BaseAdapter implements Filterable {
@@ -26,8 +28,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 	private List<HyyMessage> list;
 	private List<HyyMessage> listWhole;
 	private Handler handler;
-	
-	
+
 	public HyyDataListAdapter(Context context, Handler handler) {
 		// TODO Auto-generated constructor stub
 		this.mContext = context;
@@ -63,9 +64,18 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			convertView = LayoutInflater.from(mContext).inflate(
 					R.layout.list_view, null);
 
-			holder.title = (TextView) convertView.findViewById(R.id.ItemTitle);
-			holder.shortcut = (TextView) convertView
-					.findViewById(R.id.ItemShortcut);
+			// holder.title = (TextView)
+			// convertView.findViewById(R.id.ItemTitle);
+			// holder.shortcut = (TextView) convertView
+			// .findViewById(R.id.ItemShortcut);
+
+			holder.content = (TextView) convertView
+					.findViewById(R.id.ItemContent);
+			holder.alarmTime = (TextView) convertView
+					.findViewById(R.id.ItemAlarmTime);
+			holder.alarmDay = (TextView) convertView
+					.findViewById(R.id.ItemAlarmDays);
+
 			holder.toggleAlarm = (ToggleButton) convertView
 					.findViewById(R.id.ItemToggleAlarm);
 			convertView.setTag(holder);
@@ -74,12 +84,33 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		holder.title.setText((String) list.get(position).getTitle());
-		holder.shortcut.setText((String) list.get(position).getShortcut());
+		// holder.title.setText((String) list.get(position).getTitle());
+		// holder.shortcut.setText((String) list.get(position).getShortcut());
 
+		holder.content.setText((String) list.get(position).getContent());
+
+		// get related alarm
 		String status = list.get(position).getAlarmStatus();
+
 		if (status == null || "".equals(status) || "null".equals(status)) {
-			holder.toggleAlarm.setVisibility(View.GONE);
+			holder.alarmTime.setText("No Alarm");
+			holder.alarmDay.setText("Long Press add one");
+		} else {
+			HyyAlarm alarm = DatabaseManager
+					.getInstance(HyyDLApplication.getContext())
+					.queryAlarmById(list.get(position).getId()).get(0);
+
+			String alarmTime = alarm.getAlarmTime();
+			String alarmDay = alarm.getDayOfWeek();
+
+			holder.alarmTime.setText(StringTranslateUtil.transRegularTime(alarmTime));
+			holder.alarmDay.setText(StringTranslateUtil.transRegularWeek(alarmDay));
+
+		}
+
+		if (status == null || "".equals(status) || "null".equals(status)) {
+			holder.toggleAlarm.setVisibility(View.INVISIBLE);
+
 		} else if (HyyConstants.ALARM_STATUS_ZERO.equals(status)) {
 			holder.toggleAlarm.setVisibility(View.VISIBLE);
 			holder.toggleAlarm.setChecked(true);

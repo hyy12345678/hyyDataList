@@ -8,17 +8,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <EditText android:id="@+id/tvSearchCondititon"
+    <EditText
+        android:id="@+id/tvSearchCondititon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/search"/>
-    
+        android:hint="@string/search" />
+
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:layout_below="@id/tvSearchCondititon"/>
-
-    
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvSearchCondititon"
+        android:divider="#B5B5B5"
+        android:dividerHeight="1dp" />
 
 </RelativeLayout>
