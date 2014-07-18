@@ -1,7 +1,10 @@
 package com.example.hyydatalist.adapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -28,6 +31,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 	private List<HyyMessage> list;
 	private List<HyyMessage> listWhole;
 	private Handler handler;
+	private Map<String, HyyAlarm> mapAlarms;
 
 	public HyyDataListAdapter(Context context, Handler handler) {
 		// TODO Auto-generated constructor stub
@@ -96,15 +100,15 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			holder.alarmTime.setText("No Alarm");
 			holder.alarmDay.setText("Long Press add one");
 		} else {
-			HyyAlarm alarm = DatabaseManager
-					.getInstance(HyyDLApplication.getContext())
-					.queryAlarmById(list.get(position).getId()).get(0);
+			HyyAlarm alarm = mapAlarms.get(list.get(position).getId());
 
 			String alarmTime = alarm.getAlarmTime();
 			String alarmDay = alarm.getDayOfWeek();
 
-			holder.alarmTime.setText(StringTranslateUtil.transRegularTime(alarmTime));
-			holder.alarmDay.setText(StringTranslateUtil.transRegularWeek(alarmDay));
+			holder.alarmTime.setText(StringTranslateUtil
+					.transRegularTime(alarmTime));
+			holder.alarmDay.setText(StringTranslateUtil
+					.transRegularWeek(alarmDay));
 
 		}
 
@@ -159,6 +163,14 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			public void run() {
 				list = DatabaseManager.getInstance(mContext).queryMessage();
 				listWhole = new ArrayList<HyyMessage>(list);
+				List<HyyAlarm> listAlarms = DatabaseManager.getInstance(
+						mContext).queryAlarms();
+
+				mapAlarms = new HashMap<String, HyyAlarm>();
+				for (HyyAlarm alarm : listAlarms) {
+					mapAlarms.put(alarm.getMessageId(), alarm);
+				}
+
 				handler.sendEmptyMessage(HyyConstants.REFRESH_LIST);
 			};
 		}.start();
