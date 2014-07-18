@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.example.hyydatalist.R;
+import com.example.hyydatalist.activity.AlarmFaceActivity;
 import com.example.hyydatalist.activity.MainActivity;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.constants.HyyConstants;
@@ -23,8 +24,11 @@ import android.widget.Toast;
 
 public class TimeWatchReceiver extends BroadcastReceiver {
 
-	String title;
-	String shortcut;
+	// String title;
+	// String shortcut;
+
+	String title = HyyDLApplication.getContext().getResources()
+			.getString(R.string.app_name);
 	String content;
 
 	@Override
@@ -41,11 +45,27 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 							"It is the time! " + alarm.getAlarmTime(),
 							Toast.LENGTH_SHORT).show();
 					startNotification(alarm.getMessageId());
+
+					// go to alarm face
+					startAlarmFace(alarm.getMessageId());
 				}
 
 			}
 
 		}
+	}
+
+	/***
+	 * go to alarm face
+	 */
+	private void startAlarmFace(String messageId) {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent(HyyDLApplication.getContext(),
+				AlarmFaceActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("messageId", messageId);
+		HyyDLApplication.getContext().startActivity(intent);
+		
 	}
 
 	private boolean decideHitted(HyyAlarm alarm) {
@@ -71,8 +91,8 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 		findItemById(messageId);
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				HyyDLApplication.getContext()).setSmallIcon(R.drawable.panda)
-				.setContentTitle(title).setContentText(shortcut);
+				HyyDLApplication.getContext()).setSmallIcon(R.drawable.xiaoqimao1)
+				.setContentTitle(title).setContentText(content);
 		// Creates an explicit intent for an Activity in your app
 		Intent resultIntent = new Intent(HyyDLApplication.getContext(),
 				MainActivity.class);
@@ -107,8 +127,8 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 		// TODO Auto-generated method stub
 		List<HyyMessage> selectedMessage = DatabaseManager.getInstance(
 				HyyDLApplication.getContext()).queryMessageById(id);
-		title = selectedMessage.get(0).getTitle();
-		shortcut = selectedMessage.get(0).getShortcut();
+		// title = selectedMessage.get(0).getTitle();
+		// shortcut = selectedMessage.get(0).getShortcut();
 		content = selectedMessage.get(0).getContent();
 	}
 

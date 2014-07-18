@@ -191,7 +191,7 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * Alarm related functions
+	 * Alarm related functions active
 	 */
 
 	public List<HyyAlarm> queryAlarms() {
@@ -199,6 +199,49 @@ public class DatabaseManager {
 
 		Cursor cursor = db.rawQuery("SELECT * FROM alarms WHERE ispause = ?",
 				new String[] { "0" });
+
+		Log.i("hyy", String.valueOf(cursor.getCount()));
+		List<HyyAlarm> list = new ArrayList<HyyAlarm>();
+
+		while (cursor.moveToNext()) {
+			HyyAlarm alarm = new HyyAlarm();
+			String alarmTime = cursor.getString(cursor
+					.getColumnIndex("alarmtime"));
+			String dayOfWeek = String.valueOf(cursor.getString(cursor
+					.getColumnIndex("dayofweek")));
+			String id = String.valueOf(cursor.getInt(cursor
+					.getColumnIndex("_id")));
+
+			String messageId = String.valueOf(cursor.getString(cursor
+					.getColumnIndex("messageid")));
+
+			String isPause = String.valueOf(cursor.getString(cursor
+					.getColumnIndex("ispause")));
+
+			alarm.setId(id);
+			alarm.setAlarmTime(alarmTime);
+			alarm.setDayOfWeek(dayOfWeek);
+			alarm.setMessageId(messageId);
+			alarm.setIsPause(isPause);
+
+			list.add(alarm);
+		}
+
+		cursor.close();
+		db.close();
+
+		return list;
+
+	}
+
+	/**
+	 * Alarm related functions all
+	 */
+
+	public List<HyyAlarm> queryAlarmsWithoutCondition() {
+		SQLiteDatabase db = openHelper.getReadableDatabase();
+
+		Cursor cursor = db.rawQuery("SELECT * FROM alarms", null);
 
 		Log.i("hyy", String.valueOf(cursor.getCount()));
 		List<HyyAlarm> list = new ArrayList<HyyAlarm>();
@@ -371,7 +414,7 @@ public class DatabaseManager {
 
 			db.execSQL("UPDATE messages SET alarmstatus = '0' WHERE _id = ?",
 					new Object[] { messageId });
-			
+
 			db.setTransactionSuccessful();
 
 		} catch (Exception e) {

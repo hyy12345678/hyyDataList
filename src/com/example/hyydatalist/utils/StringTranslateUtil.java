@@ -16,7 +16,7 @@ public class StringTranslateUtil {
 		String[] times = originTime.split(":");
 
 		String hour = (times[0].length() == 2) ? times[0] : ("0" + times[0]);
-		String miniute = (times[1].length() == 2) ? times[1] : ("1" + times[1]);
+		String miniute = (times[1].length() == 2) ? times[1] : ("0" + times[1]);
 
 		return hour + ":" + miniute;
 	}

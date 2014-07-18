@@ -66,7 +66,6 @@ public class MainActivity extends ActionBarActivity {
 		initListener();
 
 		itemOnLongClick();
-
 	}
 
 	private void disableMenu() {

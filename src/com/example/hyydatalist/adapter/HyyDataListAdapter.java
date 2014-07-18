@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.content.Context;
 import android.os.Handler;
+import android.provider.Contacts.People;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -87,6 +88,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+		
 
 		// holder.title.setText((String) list.get(position).getTitle());
 		// holder.shortcut.setText((String) list.get(position).getShortcut());
@@ -164,7 +166,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 				list = DatabaseManager.getInstance(mContext).queryMessage();
 				listWhole = new ArrayList<HyyMessage>(list);
 				List<HyyAlarm> listAlarms = DatabaseManager.getInstance(
-						mContext).queryAlarms();
+						mContext).queryAlarmsWithoutCondition();
 
 				mapAlarms = new HashMap<String, HyyAlarm>();
 				for (HyyAlarm alarm : listAlarms) {
