@@ -9,7 +9,7 @@
     tools:context=".AlarmFaceActivity" >
 
     <TextView
-        android:id="@+id/alarm_face_text_test1"
+        android:id="@+id/alarm_face_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
@@ -17,7 +17,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/alarm_face_text_test1"
+        android:layout_below="@id/alarm_face_content"
         android:src="@drawable/xiaoqimao2" />
 
 </RelativeLayout>

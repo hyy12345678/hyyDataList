@@ -88,7 +88,6 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
 
 		// holder.title.setText((String) list.get(position).getTitle());
 		// holder.shortcut.setText((String) list.get(position).getShortcut());
@@ -210,8 +209,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		List<HyyMessage> newList = new ArrayList<HyyMessage>();
 
 		for (HyyMessage o : listWhole) {
-			if (o.getTitle().contains(condition)
-					|| o.getShortcut().contains(condition)) {
+			if (o.getContent().contains(condition)) {
 				newList.add(o);
 			}
 		}

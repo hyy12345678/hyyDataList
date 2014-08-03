@@ -44,14 +44,16 @@ public class AutoExtViewGroup extends ViewGroup {
 			final View child = getChildAt(i);
 			// measure
 			measureChild(child, widthMeasureSpec, heightMeasureSpec);
-			stageWidth += child.getMeasuredWidth();
+			stageWidth += (child.getMeasuredWidth() + VIEW_MARGIN);
 			stageHeight = child.getMeasuredHeight();
 			if (stageWidth >= wholeWidth) {
 				stages++;
 			}
 		}
 
-		int wholeHeight = stages * (stageHeight + VIEW_MARGIN)/2;
+		Log.i(HyyConstants.HYY_TAG, "stages:" + stages);
+
+		int wholeHeight = (stageHeight + VIEW_MARGIN) * stages;
 
 		// report this final dimension
 		setMeasuredDimension(resolveSize(wholeWidth, widthMeasureSpec),

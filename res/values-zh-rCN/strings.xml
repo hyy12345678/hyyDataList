@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">亲爱的列表</string>
+    <string name="action_settings">设置</string>
+    <string name="hello_world">你好世界!</string>
+    <string name="add_new">添加</string>
+    <string name="search">查找</string>
+    <string name="hint_title">请输入标题</string>
+    <string name="hint_shortcut">请输入摘要</string>
+    <string name="hint_content">写点什么吧</string>
+    <string name="save_alarm">保存提醒</string>
+    <string name="title_activity_alarm_message">提醒信息</string>
+    <string name="action_photo">拍照</string>
+    <string name="action_weather">天气</string>
+    <string name="pause_alarm">暂停提醒</string>
+    <string name="resume_alarm">恢复提醒</string>
+    <string name="toggle_on">ON</string>
+    <string name="toggle_off">OFF</string>
+    <string name="day0">周日</string>
+    <string name="day1">周一</string>
+    <string name="day2">周二</string>
+    <string name="day3">周三</string>
+    <string name="day4">周四</string>
+    <string name="day5">周五</string>
+    <string name="day6">周六</string>
+
+</resources>
