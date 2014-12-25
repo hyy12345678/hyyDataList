@@ -9,8 +9,8 @@ import com.example.hyydatalist.activity.MainActivity;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.constants.HyyConstants;
 import com.example.hyydatalist.database.DatabaseManager;
-import com.example.hyydatalist.model.HyyAlarm;
-import com.example.hyydatalist.model.HyyMessage;
+import com.hyy.hyydatalist.generator.Alarms;
+import com.hyy.hyydatalist.generator.Messages;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -35,19 +35,19 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 
 		// TODO Auto-generated method stub
-		List<HyyAlarm> alarms = DatabaseManager.getInstance(
+		List<Alarms> alarms = DatabaseManager.getInstance(
 				HyyDLApplication.getContext()).queryAlarms();
 
-		for (HyyAlarm alarm : alarms) {
-			if (null != alarm.getAlarmTime()) {
+		for (Alarms alarm : alarms) {
+			if (null != alarm.getAlarmtime()) {
 				if (decideHitted(alarm)) {
 					Toast.makeText(HyyDLApplication.getContext(),
-							"It is the time! " + alarm.getAlarmTime(),
+							"It is the time! " + alarm.getAlarmtime(),
 							Toast.LENGTH_SHORT).show();
-					startNotification(alarm.getMessageId());
+					startNotification(alarm.getMessageid());
 
 					// go to alarm face
-					startAlarmFace(alarm.getMessageId());
+					startAlarmFace(alarm.getMessageid());
 				}
 
 			}
@@ -68,15 +68,15 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 		
 	}
 
-	private boolean decideHitted(HyyAlarm alarm) {
+	private boolean decideHitted(Alarms alarm) {
 		// TODO Auto-generated method stub
 		Calendar curCal = Calendar.getInstance();
 		String strHour = String.valueOf(curCal.get(Calendar.HOUR_OF_DAY));
 		String strMinute = String.valueOf(curCal.get(Calendar.MINUTE));
 		int intDay = curCal.get(Calendar.DAY_OF_WEEK); // sun=1,mon=2,...,sat=7
 
-		String[] alarmHourTime = alarm.getAlarmTime().split(":");
-		String[] alarmDays = alarm.getDayOfWeek().split(":");
+		String[] alarmHourTime = alarm.getAlarmtime().split(":");
+		String[] alarmDays = alarm.getDayofweek().split(":");
 
 		boolean isTimeHitted = strHour.equals(alarmHourTime[0])
 				&& strMinute.equals(alarmHourTime[1]);
@@ -125,7 +125,7 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 
 	private void findItemById(String id) {
 		// TODO Auto-generated method stub
-		List<HyyMessage> selectedMessage = DatabaseManager.getInstance(
+		List<Messages> selectedMessage = DatabaseManager.getInstance(
 				HyyDLApplication.getContext()).queryMessageById(id);
 		// title = selectedMessage.get(0).getTitle();
 		// shortcut = selectedMessage.get(0).getShortcut();

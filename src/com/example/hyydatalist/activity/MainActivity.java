@@ -1,7 +1,5 @@
 package com.example.hyydatalist.activity;
 
-import java.lang.reflect.Field;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,14 +7,12 @@ import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnCreateContextMenuListener;
-import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -29,7 +25,7 @@ import com.example.hyydatalist.adapter.HyyDataListAdapter;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.constants.HyyConstants;
 import com.example.hyydatalist.database.DatabaseManager;
-import com.example.hyydatalist.model.HyyMessage;
+import com.hyy.hyydatalist.generator.Messages;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -59,7 +55,7 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		disableMenu();
+		//disableMenu();
 
 		init();
 
@@ -68,20 +64,20 @@ public class MainActivity extends ActionBarActivity {
 		itemOnLongClick();
 	}
 
-	private void disableMenu() {
-		// TODO Auto-generated method stub
-		try {
-			ViewConfiguration mconfig = ViewConfiguration.get(this);
-			Field menuKeyField = ViewConfiguration.class
-					.getDeclaredField("sHasPermanentMenuKey");
-			if (menuKeyField != null) {
-				menuKeyField.setAccessible(true);
-				menuKeyField.setBoolean(mconfig, false);
-			}
-		} catch (Exception ex) {
-			Log.i("hyy", "disable menu failed");
-		}
-	}
+//	private void disableMenu() {
+//		// TODO Auto-generated method stub
+//		try {
+//			ViewConfiguration mconfig = ViewConfiguration.get(this);
+//			Field menuKeyField = ViewConfiguration.class
+//					.getDeclaredField("sHasPermanentMenuKey");
+//			if (menuKeyField != null) {
+//				menuKeyField.setAccessible(true);
+//				menuKeyField.setBoolean(mconfig, false);
+//			}
+//		} catch (Exception ex) {
+//			Log.i("hyy", "disable menu failed");
+//		}
+//	}
 
 	private void itemOnLongClick() {
 		// TODO Auto-generated method stub
@@ -105,7 +101,7 @@ public class MainActivity extends ActionBarActivity {
 				.getMenuInfo();
 		int mstion = info.position;
 
-		HyyMessage selected = (HyyMessage) adapter.getItem(mstion);
+		Messages selected = (Messages) adapter.getItem(mstion);
 
 		switch (item.getItemId()) {
 
@@ -113,7 +109,7 @@ public class MainActivity extends ActionBarActivity {
 			Toast.makeText(HyyDLApplication.getContext(), "delete pressed",
 					Toast.LENGTH_SHORT).show();
 
-			HyyMessage mess = new HyyMessage();
+			Messages mess = new Messages();
 			mess.setId(selected.getId());
 			mess.setTitle(selected.getTitle());
 			mess.setShortcut(selected.getShortcut());
@@ -149,11 +145,11 @@ public class MainActivity extends ActionBarActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				HyyMessage map = (HyyMessage) listView.getItemAtPosition(arg2);
+				Messages map = (Messages) listView.getItemAtPosition(arg2);
 
 				String name = map.getTitle();
 				String age = map.getShortcut();
-				String id = map.getId();
+				String id = map.getId().toString();
 
 				Toast.makeText(HyyDLApplication.getContext(),
 						"Name Hyy :" + name + "; Age Hyy :" + age,

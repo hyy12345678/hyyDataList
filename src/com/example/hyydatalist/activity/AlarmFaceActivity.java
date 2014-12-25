@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.hyydatalist.R;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.database.DatabaseManager;
-import com.example.hyydatalist.model.HyyMessage;
+import com.hyy.hyydatalist.generator.Messages;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -31,7 +31,7 @@ public class AlarmFaceActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 
-		List<HyyMessage> selectedMessage = DatabaseManager.getInstance(
+		List<Messages> selectedMessage = DatabaseManager.getInstance(
 				HyyDLApplication.getContext()).queryMessageById(messageId);
 
 		tvtest.setText(selectedMessage.get(0).getContent());

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import android.content.Context;
 import android.os.Handler;
-import android.provider.Contacts.People;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,17 +21,17 @@ import com.example.hyydatalist.R;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.constants.HyyConstants;
 import com.example.hyydatalist.database.DatabaseManager;
-import com.example.hyydatalist.model.HyyAlarm;
-import com.example.hyydatalist.model.HyyMessage;
 import com.example.hyydatalist.utils.StringTranslateUtil;
 import com.example.hyydatalist.viewholder.ViewHolder;
+import com.hyy.hyydatalist.generator.Alarms;
+import com.hyy.hyydatalist.generator.Messages;
 
 public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 	private Context mContext;
-	private List<HyyMessage> list;
-	private List<HyyMessage> listWhole;
+	private List<Messages> list;
+	private List<Messages> listWhole;
 	private Handler handler;
-	private Map<String, HyyAlarm> mapAlarms;
+	private Map<String, Alarms> mapAlarms;
 
 	public HyyDataListAdapter(Context context, Handler handler) {
 		// TODO Auto-generated constructor stub
@@ -95,16 +94,16 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		holder.content.setText((String) list.get(position).getContent());
 
 		// get related alarm
-		String status = list.get(position).getAlarmStatus();
+		String status = list.get(position).getAlarmstatus();
 
 		if (status == null || "".equals(status) || "null".equals(status)) {
 			holder.alarmTime.setText("No Alarm");
 			holder.alarmDay.setText("Long Press add one");
 		} else {
-			HyyAlarm alarm = mapAlarms.get(list.get(position).getId());
+			Alarms alarm = mapAlarms.get(list.get(position).getId().toString());
 
-			String alarmTime = alarm.getAlarmTime();
-			String alarmDay = alarm.getDayOfWeek();
+			String alarmTime = alarm.getAlarmtime();
+			String alarmDay = alarm.getDayofweek();
 
 			holder.alarmTime.setText(StringTranslateUtil
 					.transRegularTime(alarmTime));
@@ -125,7 +124,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		}
 
 		// final boolean isChecked = holder.toggleAlarm.isChecked();
-		final String messageId = (String) list.get(position).getId();
+		final String messageId = list.get(position).getId().toString();
 
 		holder.toggleAlarm.setOnClickListener(new OnClickListener() {
 
@@ -143,7 +142,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 
 		String isPause = DatabaseManager
 				.getInstance(HyyDLApplication.getContext())
-				.queryAlarmById(messageId).get(0).getIsPause();
+				.queryAlarmById(messageId).get(0).getIspause();
 
 		if (HyyConstants.ALARM_STATUS_ZERO.equals(isPause)) {
 			// pause it
@@ -163,13 +162,13 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			@Override
 			public void run() {
 				list = DatabaseManager.getInstance(mContext).queryMessage();
-				listWhole = new ArrayList<HyyMessage>(list);
-				List<HyyAlarm> listAlarms = DatabaseManager.getInstance(
+				listWhole = new ArrayList<Messages>(list);
+				List<Alarms> listAlarms = DatabaseManager.getInstance(
 						mContext).queryAlarmsWithoutCondition();
 
-				mapAlarms = new HashMap<String, HyyAlarm>();
-				for (HyyAlarm alarm : listAlarms) {
-					mapAlarms.put(alarm.getMessageId(), alarm);
+				mapAlarms = new HashMap<String, Alarms>();
+				for (Alarms alarm : listAlarms) {
+					mapAlarms.put(alarm.getMessageid(), alarm);
 				}
 
 				handler.sendEmptyMessage(HyyConstants.REFRESH_LIST);
@@ -197,18 +196,18 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			protected void publishResults(CharSequence constraint,
 					FilterResults results) {
 				// TODO Auto-generated method stub
-				list = (List<HyyMessage>) results.values;
+				list = (List<Messages>) results.values;
 				notifyDataSetChanged();
 
 			}
 		};
 	}
 
-	protected List<HyyMessage> getFilteredList(String condition) {
+	protected List<Messages> getFilteredList(String condition) {
 		// TODO Auto-generated method stub
-		List<HyyMessage> newList = new ArrayList<HyyMessage>();
+		List<Messages> newList = new ArrayList<Messages>();
 
-		for (HyyMessage o : listWhole) {
+		for (Messages o : listWhole) {
 			if (o.getContent().contains(condition)) {
 				newList.add(o);
 			}

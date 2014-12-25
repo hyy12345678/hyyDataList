@@ -6,7 +6,7 @@ import java.util.List;
 import com.example.hyydatalist.R;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.database.DatabaseManager;
-import com.example.hyydatalist.model.HyyMessage;
+import com.hyy.hyydatalist.generator.Messages;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -53,7 +53,7 @@ public class EditActivity extends ActionBarActivity {
 		}
 		else
 		{
-			List<HyyMessage> selectedMessage = DatabaseManager.getInstance(
+			List<Messages> selectedMessage = DatabaseManager.getInstance(
 					HyyDLApplication.getContext()).queryMessageById(id);
 			title = selectedMessage.get(0).getTitle();
 			shortcut = selectedMessage.get(0).getShortcut();
@@ -90,11 +90,15 @@ public class EditActivity extends ActionBarActivity {
 		if (!("".equals(etTitle.getText().toString().trim())
 				&& "".equals(etShortcut.getText().toString().trim()) && ""
 					.equals(etContent.getText().toString()))) {
-			List<HyyMessage> persons = new ArrayList<HyyMessage>();
+			List<Messages> persons = new ArrayList<Messages>();
 
-			HyyMessage person = new HyyMessage();
+			Messages person = new Messages();
 
-			person.setId(id);
+			if("".equals(id)){
+				person.setId(null);
+			}else{
+				person.setId(Long.valueOf(id));
+			}
 			person.setTitle(etTitle.getText().toString());
 			person.setShortcut(etShortcut.getText().toString());
 			person.setContent(etContent.getText().toString());

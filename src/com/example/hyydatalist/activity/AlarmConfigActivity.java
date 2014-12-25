@@ -6,7 +6,7 @@ import java.util.List;
 import com.example.hyydatalist.R;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.database.DatabaseManager;
-import com.example.hyydatalist.model.HyyAlarm;
+import com.hyy.hyydatalist.generator.Alarms;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -68,27 +68,27 @@ public class AlarmConfigActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 
-		messageId = getIntent().getStringExtra("messageId");
+		messageId =String.valueOf(getIntent().getLongExtra("messageId", 0));
 		hourOfDay = String.valueOf(tp.getCurrentHour());
 		minute = String.valueOf(tp.getCurrentMinute());
 
-		List<HyyAlarm> saveAlarmLst = DatabaseManager.getInstance(
+		List<Alarms> saveAlarmLst = DatabaseManager.getInstance(
 				HyyDLApplication.getContext()).queryAlarmById(messageId);
 
 		tp.setIs24HourView(true);
 
 		if (!saveAlarmLst.isEmpty()) {
-			HyyAlarm savedAlarm = saveAlarmLst.get(0);
-			if (!(savedAlarm.getAlarmTime() == null || savedAlarm
-					.getAlarmTime().isEmpty())) {
-				String[] times = savedAlarm.getAlarmTime().split(":");
+			Alarms savedAlarm = saveAlarmLst.get(0);
+			if (!(savedAlarm.getAlarmtime() == null || savedAlarm
+					.getAlarmtime().isEmpty())) {
+				String[] times = savedAlarm.getAlarmtime().split(":");
 				tp.setCurrentHour(Integer.valueOf(times[0]));
 				tp.setCurrentMinute(Integer.valueOf(times[1]));
 			}
 
-			if (!(savedAlarm.getDayOfWeek() == null || savedAlarm
-					.getDayOfWeek().isEmpty())) {
-				String[] days = savedAlarm.getDayOfWeek().split(":");
+			if (!(savedAlarm.getDayofweek() == null || savedAlarm
+					.getDayofweek().isEmpty())) {
+				String[] days = savedAlarm.getDayofweek().split(":");
 				day0 = days[0];
 				day1 = days[1];
 				day2 = days[2];
@@ -101,9 +101,9 @@ public class AlarmConfigActivity extends Activity {
 
 			}
 
-			if (savedAlarm.getIsPause() != null
-					&& !savedAlarm.getIsPause().isEmpty()) {
-				if ("0".equals(savedAlarm.getIsPause())) {
+			if (savedAlarm.getIspause() != null
+					&& !savedAlarm.getIspause().isEmpty()) {
+				if ("0".equals(savedAlarm.getIspause())) {
 					// no pause status,so pause appears
 					btnPause.setVisibility(View.VISIBLE);
 					btnResume.setVisibility(View.GONE);
@@ -218,19 +218,19 @@ public class AlarmConfigActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				List<HyyAlarm> alarms = new ArrayList<HyyAlarm>();
-				HyyAlarm alarm = new HyyAlarm();
+				List<Alarms> alarms = new ArrayList<Alarms>();
+				Alarms alarm = new Alarms();
 				String saveTime = getSelectedTime();
 				Toast.makeText(HyyDLApplication.getContext(),
 						"saveTime:" + saveTime, Toast.LENGTH_SHORT).show();
 
-				alarm.setAlarmTime(saveTime);
-				alarm.setMessageId(messageId);
+				alarm.setAlarmtime(saveTime);
+				alarm.setMessageid(messageId);
 
 				String strDays = getDays();
 
 				if (!"0:0:0:0:0:0:0".equals(strDays)) {
-					alarm.setDayOfWeek(strDays);
+					alarm.setDayofweek(strDays);
 
 					alarms.add(alarm);
 
