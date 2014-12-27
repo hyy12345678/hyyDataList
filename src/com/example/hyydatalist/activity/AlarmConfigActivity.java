@@ -19,6 +19,11 @@ import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
 
+/**
+ * Interface for user config Alarm
+ * @author hyylj
+ *
+ */
 public class AlarmConfigActivity extends Activity {
 
 	TimePicker tp;
@@ -51,6 +56,8 @@ public class AlarmConfigActivity extends Activity {
 	String day4 = "0";
 	String day5 = "0";
 	String day6 = "0";
+	
+	Alarms savedAlarm = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +74,6 @@ public class AlarmConfigActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-
 		messageId =String.valueOf(getIntent().getLongExtra("messageId", 0));
 		hourOfDay = String.valueOf(tp.getCurrentHour());
 		minute = String.valueOf(tp.getCurrentMinute());
@@ -78,7 +84,7 @@ public class AlarmConfigActivity extends Activity {
 		tp.setIs24HourView(true);
 
 		if (!saveAlarmLst.isEmpty()) {
-			Alarms savedAlarm = saveAlarmLst.get(0);
+			 savedAlarm = saveAlarmLst.get(0);
 			if (!(savedAlarm.getAlarmtime() == null || savedAlarm
 					.getAlarmtime().isEmpty())) {
 				String[] times = savedAlarm.getAlarmtime().split(":");
@@ -219,20 +225,24 @@ public class AlarmConfigActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				List<Alarms> alarms = new ArrayList<Alarms>();
-				Alarms alarm = new Alarms();
+				
+				if(null == savedAlarm){
+					savedAlarm = new Alarms();
+				}
+				
 				String saveTime = getSelectedTime();
 				Toast.makeText(HyyDLApplication.getContext(),
 						"saveTime:" + saveTime, Toast.LENGTH_SHORT).show();
-
-				alarm.setAlarmtime(saveTime);
-				alarm.setMessageid(messageId);
+				
+				savedAlarm.setAlarmtime(saveTime);
+				savedAlarm.setMessageid(messageId);
 
 				String strDays = getDays();
 
 				if (!"0:0:0:0:0:0:0".equals(strDays)) {
-					alarm.setDayofweek(strDays);
+					savedAlarm.setDayofweek(strDays);
 
-					alarms.add(alarm);
+					alarms.add(savedAlarm);
 
 					DatabaseManager.getInstance(HyyDLApplication.getContext())
 							.saveOrUpdateAlarm(alarms);

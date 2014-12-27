@@ -25,6 +25,7 @@ import com.example.hyydatalist.adapter.HyyDataListAdapter;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.constants.HyyConstants;
 import com.example.hyydatalist.database.DatabaseManager;
+import com.hyy.hyydatalist.generator.Alarms;
 import com.hyy.hyydatalist.generator.Messages;
 
 public class MainActivity extends ActionBarActivity {
@@ -34,28 +35,30 @@ public class MainActivity extends ActionBarActivity {
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
-			
+
 			switch (msg.what) {
 			case HyyConstants.REFRESH_LIST:
-				Toast.makeText(HyyDLApplication.getContext().getApplicationContext(), "Refresh list", Toast.LENGTH_SHORT).show();
+				Toast.makeText(
+						HyyDLApplication.getContext().getApplicationContext(),
+						"Refresh list", Toast.LENGTH_SHORT).show();
 				initList();
 				break;
 
 			default:
 				break;
 			}
-			
+
 		};
 	};
-	HyyDataListAdapter adapter = new HyyDataListAdapter(
-			HyyDLApplication.getContext().getApplicationContext(), handler);
+	HyyDataListAdapter adapter = new HyyDataListAdapter(HyyDLApplication
+			.getContext().getApplicationContext(), handler);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		//disableMenu();
+		// disableMenu();
 
 		init();
 
@@ -64,20 +67,20 @@ public class MainActivity extends ActionBarActivity {
 		itemOnLongClick();
 	}
 
-//	private void disableMenu() {
-//		// TODO Auto-generated method stub
-//		try {
-//			ViewConfiguration mconfig = ViewConfiguration.get(this);
-//			Field menuKeyField = ViewConfiguration.class
-//					.getDeclaredField("sHasPermanentMenuKey");
-//			if (menuKeyField != null) {
-//				menuKeyField.setAccessible(true);
-//				menuKeyField.setBoolean(mconfig, false);
-//			}
-//		} catch (Exception ex) {
-//			Log.i("hyy", "disable menu failed");
-//		}
-//	}
+	// private void disableMenu() {
+	// // TODO Auto-generated method stub
+	// try {
+	// ViewConfiguration mconfig = ViewConfiguration.get(this);
+	// Field menuKeyField = ViewConfiguration.class
+	// .getDeclaredField("sHasPermanentMenuKey");
+	// if (menuKeyField != null) {
+	// menuKeyField.setAccessible(true);
+	// menuKeyField.setBoolean(mconfig, false);
+	// }
+	// } catch (Exception ex) {
+	// Log.i("hyy", "disable menu failed");
+	// }
+	// }
 
 	private void itemOnLongClick() {
 		// TODO Auto-generated method stub
@@ -109,14 +112,24 @@ public class MainActivity extends ActionBarActivity {
 			Toast.makeText(HyyDLApplication.getContext(), "delete pressed",
 					Toast.LENGTH_SHORT).show();
 
-			Messages mess = new Messages();
-			mess.setId(selected.getId());
-			mess.setTitle(selected.getTitle());
-			mess.setShortcut(selected.getShortcut());
+			// Messages mess = new Messages();
+			// mess.setId(selected.getId());
+			// mess.setTitle(selected.getTitle());
+			// mess.setShortcut(selected.getShortcut());
+
+			if (selected.getAlarmstatus() != null) {
+				Alarms alarm = DatabaseManager
+						.getInstance(HyyDLApplication.getContext())
+						.queryAlarmById(selected.getId().toString()).get(0);
+
+				DatabaseManager.getInstance(HyyDLApplication.getContext())
+						.deleteAlarm(alarm);
+			}
 
 			DatabaseManager.getInstance(HyyDLApplication.getContext())
-					.deleteMessage(mess);
-//			initList();
+					.deleteMessage(selected);
+
+			// initList();
 			adapter.getData();
 			break;
 
@@ -207,12 +220,12 @@ public class MainActivity extends ActionBarActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-//		initList();
+		// initList();
 		adapter.getData();
 	}
 
 	private void initList() {
-//		adapter = new HyyDataListAdapter(HyyDLApplication.getContext());
+		// adapter = new HyyDataListAdapter(HyyDLApplication.getContext());
 		listView.setAdapter(adapter);
 	}
 
@@ -248,7 +261,7 @@ public class MainActivity extends ActionBarActivity {
 			Toast.makeText(HyyDLApplication.getContext(),
 					"You press weather btn!", Toast.LENGTH_SHORT).show();
 			return true;
-			
+
 		}
 		return false; // should never happen
 	}

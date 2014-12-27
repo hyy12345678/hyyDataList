@@ -9,6 +9,7 @@ import com.example.hyydatalist.database.DatabaseManager;
 import com.hyy.hyydatalist.generator.Messages;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.EditText;
@@ -24,6 +25,8 @@ public class EditActivity extends ActionBarActivity {
 	String shortcut;
 	String id;
 	String content;
+
+	Messages savedMessage = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,21 +48,19 @@ public class EditActivity extends ActionBarActivity {
 
 	private void findItemById(String id) {
 		// TODO Auto-generated method stub
-		if("".equals(id))
-		{
+		if ("".equals(id)) {
 			title = "";
 			shortcut = "";
 			content = "";
-		}
-		else
-		{
+
+		} else {
 			List<Messages> selectedMessage = DatabaseManager.getInstance(
 					HyyDLApplication.getContext()).queryMessageById(id);
+			savedMessage = selectedMessage.get(0);
 			title = selectedMessage.get(0).getTitle();
 			shortcut = selectedMessage.get(0).getShortcut();
 			content = selectedMessage.get(0).getContent();
 		}
-		
 
 	}
 
@@ -77,7 +78,6 @@ public class EditActivity extends ActionBarActivity {
 		etContent = (EditText) findViewById(R.id.et_content);
 	}
 
-
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
@@ -92,18 +92,17 @@ public class EditActivity extends ActionBarActivity {
 					.equals(etContent.getText().toString()))) {
 			List<Messages> persons = new ArrayList<Messages>();
 
-			Messages person = new Messages();
+			// Messages person = new Messages();
 
-			if("".equals(id)){
-				person.setId(null);
-			}else{
-				person.setId(Long.valueOf(id));
+			if ("".equals(id)) {
+				savedMessage = new Messages();
 			}
-			person.setTitle(etTitle.getText().toString());
-			person.setShortcut(etShortcut.getText().toString());
-			person.setContent(etContent.getText().toString());
 
-			persons.add(person);
+			savedMessage.setTitle(etTitle.getText().toString());
+			savedMessage.setShortcut(etShortcut.getText().toString());
+			savedMessage.setContent(etContent.getText().toString());
+
+			persons.add(savedMessage);
 
 			DatabaseManager.getInstance(HyyDLApplication.getContext())
 					.saveOrUpdateMessage(persons);

@@ -28,7 +28,7 @@ public interface IDataBaseWork {
 	
 	public void deleteAlarm(Alarms alarm);
 	
-	public List<Alarms> queryAlarmById(String conditon);
+	public List<Alarms> queryAlarmById(String messageId);
 	
 	public void pauseAlarm(String messageId);
 	
