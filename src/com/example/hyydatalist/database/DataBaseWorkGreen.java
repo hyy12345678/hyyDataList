@@ -31,10 +31,8 @@ public class DataBaseWorkGreen implements IDataBaseWork {
 		db = helper.getWritableDatabase();
 		daoMaster = new DaoMaster(db);
 		daoSession = daoMaster.newSession();
-
 		messageDao = daoSession.getMessagesDao();
 		alarmDao = daoSession.getAlarmsDao();
-
 	}
 
 	@Override
@@ -62,6 +60,14 @@ public class DataBaseWorkGreen implements IDataBaseWork {
 	public void deleteMessage(Messages mess) {
 		// TODO Auto-generated method stub
 		messageDao.delete(mess);
+		
+		/***
+		 *Test for daoSession 
+		
+		Messages messTemp = new Messages();
+		messTemp.setContent("This is made by daoSession");
+		daoSession.insert(messTemp);
+		 */
 
 	}
 
@@ -97,8 +103,8 @@ public class DataBaseWorkGreen implements IDataBaseWork {
 	@Override
 	public List<Alarms> queryAlarmById(String messageId) {
 		// TODO Auto-generated method stub
-		
-		Log.i(HyyConstants.HYY_TAG, "messageId is:"+messageId);
+
+		Log.i(HyyConstants.HYY_TAG, "messageId is:" + messageId);
 		return alarmDao
 				.queryBuilder()
 				.where(com.hyy.hyydatalist.generator.AlarmsDao.Properties.Messageid
