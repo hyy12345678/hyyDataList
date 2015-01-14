@@ -4,18 +4,33 @@
     android:layout_height="wrap_content" >
 
     <RelativeLayout
+        android:id="@+id/CheckboxLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true" >
+
+        <CheckBox
+            android:id="@+id/ItemCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/AlarmLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/CheckboxLayout" >
 
         <ToggleButton
             android:id="@+id/ItemToggleAlarm"
             android:layout_width="27dp"
             android:layout_height="27dp"
             android:layout_alignParentRight="true"
-            android:focusable="false"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="7dp"
             android:background="@drawable/toggle_selector"
-            android:layout_marginTop="5dp"
+            android:focusable="false"
             android:textOff=""
             android:textOn="" />
 
@@ -23,32 +38,39 @@
             android:id="@+id/ItemAlarmTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@id/ItemToggleAlarm"
             android:textColor="#000000"
-            android:textSize="20sp" >
+            android:textSize="20sp"
+            android:textStyle="bold" >
         </TextView>
 
         <TextView
             android:id="@+id/ItemAlarmDays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ItemAlarmTime"
             android:layout_alignParentLeft="true"
-            android:textColor="#696969"
+            android:layout_below="@id/ItemAlarmTime"
             android:layout_toLeftOf="@+id/ItemToggleAlarm"
+            android:textColor="#696969"
             android:textSize="13sp" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/ItemContent"
+    <RelativeLayout
+        android:id="@+id/MessageLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/AlarmLayout"
-        android:text="This is just a test!!!"
-        android:textColor="#000000"
-        android:textSize="15sp" >
-    </TextView>
+        android:layout_toRightOf="@id/CheckboxLayout" >
+
+        <TextView
+            android:id="@+id/ItemContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This is just a test!!!"
+            android:textColor="#000000"
+            android:textSize="15sp" >
+        </TextView>
+    </RelativeLayout>
 
 </RelativeLayout>

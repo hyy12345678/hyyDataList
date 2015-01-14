@@ -1080,19 +1080,26 @@ containing a value of this type.
         public static final int bell_uncheck=0x7f020058;
         public static final int btn_day_normal=0x7f020059;
         public static final int btn_day_unselected=0x7f02005a;
-        public static final int ic_action_new=0x7f02005b;
-        public static final int ic_launcher=0x7f02005c;
-        public static final int toggle_selector=0x7f02005d;
-        public static final int xiaoqimao1=0x7f02005e;
-        public static final int xiaoqimao2=0x7f02005f;
+        public static final int ic_action_add_alarm=0x7f02005b;
+        public static final int ic_action_new=0x7f02005c;
+        public static final int ic_action_time=0x7f02005d;
+        public static final int ic_action_trash=0x7f02005e;
+        public static final int ic_launcher=0x7f02005f;
+        public static final int toggle_selector=0x7f020060;
+        public static final int xiaoqimao1=0x7f020061;
+        public static final int xiaoqimao2=0x7f020062;
     }
     public static final class id {
-        public static final int AlarmLayout=0x7f05004d;
-        public static final int ItemAlarmDays=0x7f050050;
-        public static final int ItemAlarmTime=0x7f05004f;
-        public static final int ItemContent=0x7f050051;
-        public static final int ItemToggleAlarm=0x7f05004e;
-        public static final int action_add=0x7f050055;
+        public static final int AlarmLayout=0x7f05004f;
+        public static final int CheckboxLayout=0x7f05004d;
+        public static final int ItemAlarmDays=0x7f050052;
+        public static final int ItemAlarmTime=0x7f050051;
+        public static final int ItemCheckBox=0x7f05004e;
+        public static final int ItemContent=0x7f050054;
+        public static final int ItemToggleAlarm=0x7f050050;
+        public static final int MessageLayout=0x7f050053;
+        public static final int action_add=0x7f05005a;
+        public static final int action_alarm=0x7f050057;
         public static final int action_bar=0x7f05001c;
         public static final int action_bar_activity_content=0x7f050015;
         public static final int action_bar_container=0x7f05001b;
@@ -1100,13 +1107,14 @@ containing a value of this type.
         public static final int action_bar_root=0x7f05001a;
         public static final int action_bar_subtitle=0x7f050023;
         public static final int action_bar_title=0x7f050022;
+        public static final int action_cont_del=0x7f050056;
         public static final int action_context_bar=0x7f05001d;
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_photo=0x7f050053;
-        public static final int action_settings=0x7f050052;
-        public static final int action_weather=0x7f050054;
+        public static final int action_photo=0x7f050058;
+        public static final int action_settings=0x7f050055;
+        public static final int action_weather=0x7f050059;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int alarm_face_content=0x7f05003c;
         public static final int always=0x7f05000b;
@@ -1233,7 +1241,9 @@ containing a value of this type.
     }
     public static final class menu {
         public static final int alarm_face=0x7f0c0000;
-        public static final int main=0x7f0c0001;
+        public static final int contextual_main=0x7f0c0001;
+        public static final int edit=0x7f0c0002;
+        public static final int main=0x7f0c0003;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1276,6 +1286,8 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
+        public static final int action_alarm=0x7f0a0024;
+        public static final int action_cont_del=0x7f0a0025;
         public static final int action_photo=0x7f0a0017;
         public static final int action_settings=0x7f0a000e;
         public static final int action_weather=0x7f0a0018;
@@ -2677,7 +2689,7 @@ containing a value of this type.
          */
         public static final int[] MenuView = {
             0x010100ae, 0x0101012c, 0x0101012d, 0x0101012e,
-            0x0101012f, 0x01010130, 0x01010131, 0x010103f8
+            0x0101012f, 0x01010130, 0x01010131, 0x01010435
         };
         /**
           <p>

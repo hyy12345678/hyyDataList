@@ -1,5 +1,9 @@
 package com.example.hyydatalist.activity;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,12 +11,17 @@ import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnCreateContextMenuListener;
+import android.view.ViewConfiguration;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -25,13 +34,16 @@ import com.example.hyydatalist.adapter.HyyDataListAdapter;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.constants.HyyConstants;
 import com.example.hyydatalist.database.DatabaseManager;
+import com.example.hyydatalist.utils.HyyCommonUtils;
 import com.hyy.hyydatalist.generator.Alarms;
 import com.hyy.hyydatalist.generator.Messages;
 
+@SuppressLint("NewApi")
 public class MainActivity extends ActionBarActivity {
 
 	ListView listView;
 	EditText etSearchCondition;
+
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -50,6 +62,7 @@ public class MainActivity extends ActionBarActivity {
 
 		};
 	};
+
 	HyyDataListAdapter adapter = new HyyDataListAdapter(HyyDLApplication
 			.getContext().getApplicationContext(), handler);
 
@@ -58,38 +71,123 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// disableMenu();
-
 		init();
 
 		initListener();
 
-		itemOnLongClick();
+		// do inital work according to different sys ver
+		initByVersion();
+
 	}
 
-	// private void disableMenu() {
-	// // TODO Auto-generated method stub
-	// try {
-	// ViewConfiguration mconfig = ViewConfiguration.get(this);
-	// Field menuKeyField = ViewConfiguration.class
-	// .getDeclaredField("sHasPermanentMenuKey");
-	// if (menuKeyField != null) {
-	// menuKeyField.setAccessible(true);
-	// menuKeyField.setBoolean(mconfig, false);
-	// }
-	// } catch (Exception ex) {
-	// Log.i("hyy", "disable menu failed");
-	// }
-	// }
-
-	private void itemOnLongClick() {
+	/***
+	 * change for 4.0 UI
+	 */
+	private void initByVersion() {
 		// TODO Auto-generated method stub
+		if (HyyCommonUtils.getHandSetSDKVer() < 11) {
+
+			itemOnLongClick();
+		} else {
+			// only works fine with 4.0
+			disableMenu();
+
+			// initial for Contextual action Mode in 4.0
+			initialContextualAction();
+
+		}
+	}
+
+	/***
+	 * only works fine with android 4.0 and beyond
+	 */
+	private void disableMenu() {
+		// TODO Auto-generated method stub
+		try {
+			ViewConfiguration mconfig = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class
+					.getDeclaredField("sHasPermanentMenuKey");
+			if (menuKeyField != null) {
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(mconfig, false);
+			}
+		} catch (Exception ex) {
+			Log.i("hyy", "disable menu failed");
+		}
+	}
+
+	/***
+	 * initial Contextual action mode
+	 */
+	@SuppressLint("NewApi")
+	private void initialContextualAction() {
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
+
+			@Override
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public void onDestroyActionMode(ActionMode mode) {
+				// TODO Auto-generated method stub
+				adapter.clearCheckBox();
+			}
+
+			@Override
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				// TODO Auto-generated method stub
+
+				MenuInflater inflater = mode.getMenuInflater();
+				inflater.inflate(R.menu.contextual_main, menu);
+				
+				adapter.showCheckBox();
+
+				return true;
+			}
+
+			@Override
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				// TODO Auto-generated method stub
+				switch (item.getItemId()) {
+				case R.id.action_cont_del:
+
+					adapter.deleteSelected();
+					mode.finish();
+					
+					return true;
+
+				default:
+					return false;
+				}
+
+			}
+
+			@Override
+			public void onItemCheckedStateChanged(ActionMode mode,
+					int position, long id, boolean checked) {
+				// TODO Auto-generated method stub
+			}
+
+		});
+
+	}
+
+	
+
+	/***
+	 * used for floating context menu
+	 */
+
+	private void itemOnLongClick() { // TODO Auto-generated method stub
 		listView.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 
 			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v,
-					ContextMenuInfo menuInfo) {
-				// TODO Auto-generated method stub
+					ContextMenuInfo menuInfo) { // TODO Auto-generated method
+												// stub
 				menu.add(0, 0, 0, "Delete");
 				menu.add(0, 1, 0, "Alarm");
 
@@ -97,26 +195,15 @@ public class MainActivity extends ActionBarActivity {
 		});
 	}
 
-	// 长按菜单响应函数
-	public boolean onContextItemSelected(MenuItem item) {
+	/***
+	 * delete selected item from db
+	 * 
+	 * @param selecedPos
+	 */
+	private void deleteSelectedFromDB(List<Integer> selecedPos) {
 
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
-				.getMenuInfo();
-		int mstion = info.position;
-
-		Messages selected = (Messages) adapter.getItem(mstion);
-
-		switch (item.getItemId()) {
-
-		case 0:
-			Toast.makeText(HyyDLApplication.getContext(), "delete pressed",
-					Toast.LENGTH_SHORT).show();
-
-			// Messages mess = new Messages();
-			// mess.setId(selected.getId());
-			// mess.setTitle(selected.getTitle());
-			// mess.setShortcut(selected.getShortcut());
-
+		for (int mstion : selecedPos) {
+			Messages selected = (Messages) adapter.getItem(mstion);
 			if (selected.getAlarmstatus() != null) {
 				Alarms alarm = DatabaseManager
 						.getInstance(HyyDLApplication.getContext())
@@ -128,17 +215,44 @@ public class MainActivity extends ActionBarActivity {
 
 			DatabaseManager.getInstance(HyyDLApplication.getContext())
 					.deleteMessage(selected);
+		}
 
-			// initList();
+	}
+
+	/***
+	 * floating context menu long press list Item
+	 */
+	public boolean onContextItemSelected(MenuItem item) {
+
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+				.getMenuInfo();
+		int mstion = info.position;
+
+		switch (item.getItemId()) {
+
+		case 0:
+			Toast.makeText(HyyDLApplication.getContext(), "delete pressed",
+					Toast.LENGTH_SHORT).show();
+
+			List<Integer> list = new ArrayList<Integer>();
+			list.add(mstion);
+
+			deleteSelectedFromDB(list);
+
 			adapter.getData();
 			break;
 
 		case 1:
 			Toast.makeText(HyyDLApplication.getContext(), "Alarm pressed",
 					Toast.LENGTH_SHORT).show();
+
+			Messages selected = (Messages) adapter.getItem(mstion);
+
 			Intent intent = new Intent(HyyDLApplication.getContext(),
 					AlarmConfigActivity.class);
+
 			intent.putExtra("messageId", selected.getId());
+
 			this.startActivity(intent);
 			break;
 
@@ -150,6 +264,9 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
+	/***
+	 * initial for listeners
+	 */
 	private void initListener() {
 		// TODO Auto-generated method stub
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -173,6 +290,7 @@ public class MainActivity extends ActionBarActivity {
 				intent.putExtra("title", name);
 				intent.putExtra("shortcut", age);
 				intent.putExtra("id", id);
+				intent.putExtra("forwardType", HyyConstants.FORWARD_EDIT);
 
 				startActivity(intent);
 			}
@@ -203,6 +321,9 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
+	/***
+	 * Add new Message Intent
+	 */
 	private void createNewMessage() {
 		Toast.makeText(HyyDLApplication.getContext(), "Add a new item.",
 				Toast.LENGTH_SHORT).show();
@@ -212,6 +333,7 @@ public class MainActivity extends ActionBarActivity {
 		intent.putExtra("title", "");
 		intent.putExtra("shortcut", "");
 		intent.putExtra("id", "");
+		intent.putExtra("forwardType", HyyConstants.FORWARD_NEW);
 
 		startActivity(intent);
 	}

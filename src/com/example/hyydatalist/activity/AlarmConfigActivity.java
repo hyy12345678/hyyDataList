@@ -8,8 +8,8 @@ import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.database.DatabaseManager;
 import com.hyy.hyydatalist.generator.Alarms;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,10 +21,11 @@ import android.widget.Toast;
 
 /**
  * Interface for user config Alarm
+ * 
  * @author hyylj
- *
+ * 
  */
-public class AlarmConfigActivity extends Activity {
+public class AlarmConfigActivity extends ActionBarActivity {
 
 	TimePicker tp;
 
@@ -39,7 +40,7 @@ public class AlarmConfigActivity extends Activity {
 	Button btnResume;
 
 	String messageId;
-
+ 
 	// Day of week textview
 	TextView tvDay0;
 	TextView tvDay1;
@@ -56,7 +57,7 @@ public class AlarmConfigActivity extends Activity {
 	String day4 = "0";
 	String day5 = "0";
 	String day6 = "0";
-	
+
 	Alarms savedAlarm = null;
 
 	@Override
@@ -64,6 +65,7 @@ public class AlarmConfigActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alarmconfig);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		init();
 		initListener();
@@ -74,7 +76,7 @@ public class AlarmConfigActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		messageId =String.valueOf(getIntent().getLongExtra("messageId", 0));
+		messageId = String.valueOf(getIntent().getLongExtra("messageId", 0));
 		hourOfDay = String.valueOf(tp.getCurrentHour());
 		minute = String.valueOf(tp.getCurrentMinute());
 
@@ -84,7 +86,7 @@ public class AlarmConfigActivity extends Activity {
 		tp.setIs24HourView(true);
 
 		if (!saveAlarmLst.isEmpty()) {
-			 savedAlarm = saveAlarmLst.get(0);
+			savedAlarm = saveAlarmLst.get(0);
 			if (!(savedAlarm.getAlarmtime() == null || savedAlarm
 					.getAlarmtime().isEmpty())) {
 				String[] times = savedAlarm.getAlarmtime().split(":");
@@ -225,15 +227,15 @@ public class AlarmConfigActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				List<Alarms> alarms = new ArrayList<Alarms>();
-				
-				if(null == savedAlarm){
+
+				if (null == savedAlarm) {
 					savedAlarm = new Alarms();
 				}
-				
+
 				String saveTime = getSelectedTime();
 				Toast.makeText(HyyDLApplication.getContext(),
 						"saveTime:" + saveTime, Toast.LENGTH_SHORT).show();
-				
+
 				savedAlarm.setAlarmtime(saveTime);
 				savedAlarm.setMessageid(messageId);
 
@@ -269,7 +271,7 @@ public class AlarmConfigActivity extends Activity {
 				// TODO Auto-generated method stub
 				DatabaseManager.getInstance(HyyDLApplication.getContext())
 						.pauseAlarm(messageId);
-				
+
 				btnPause.setVisibility(View.GONE);
 				btnResume.setVisibility(View.VISIBLE);
 			}

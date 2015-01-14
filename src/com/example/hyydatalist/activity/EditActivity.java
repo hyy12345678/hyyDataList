@@ -8,10 +8,12 @@ import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.database.DatabaseManager;
 import com.hyy.hyydatalist.generator.Messages;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,6 +27,9 @@ public class EditActivity extends ActionBarActivity {
 	String shortcut;
 	String id;
 	String content;
+	int ALARM_MENU = 0;
+
+	static String savedId;
 
 	Messages savedMessage = null;
 
@@ -35,15 +40,73 @@ public class EditActivity extends ActionBarActivity {
 
 		setContentView(R.layout.activity_edit);
 
-		ActionBar bar = getSupportActionBar();
-		bar.setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		id = getIntent().getStringExtra("id");
+		int type = getIntent().getIntExtra("forwardType", -1);
+
+		if (-1 == type) {
+
+			id = savedId;
+
+		} else {
+			id = getIntent().getStringExtra("id");
+		}
+
+		Log.i("test", "type:" + type);
+
+		Log.i("test", "id:" + id);
 
 		findItemById(id);
 		init();
 		initData();
 
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		getMenuInflater().inflate(R.menu.edit, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()) {
+		case R.id.action_alarm:
+
+			Toast.makeText(HyyDLApplication.getContext(),
+					"You press Alarm btn!", Toast.LENGTH_SHORT).show();
+			forwardAlarm();
+			return true;
+
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		super.onPrepareOptionsMenu(menu);
+
+		MenuItem item = menu.getItem(ALARM_MENU);
+		if (null == id || id.isEmpty()) {
+
+			item.setVisible(false);
+		} else {
+			item.setVisible(true);
+		}
+
+		return true;
+	}
+
+	private void forwardAlarm() {
+
+		Intent intent = new Intent(HyyDLApplication.getContext(),
+				AlarmConfigActivity.class);
+		intent.putExtra("messageId", Long.valueOf(id));
+		this.startActivity(intent);
 	}
 
 	private void findItemById(String id) {
@@ -82,10 +145,11 @@ public class EditActivity extends ActionBarActivity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		saveItem();
+		savedId = id;
 		super.onPause();
 	}
 
-	private void saveItem() {
+	private boolean saveItem() {
 
 		if (!("".equals(etTitle.getText().toString().trim())
 				&& "".equals(etShortcut.getText().toString().trim()) && ""
@@ -106,10 +170,14 @@ public class EditActivity extends ActionBarActivity {
 
 			DatabaseManager.getInstance(HyyDLApplication.getContext())
 					.saveOrUpdateMessage(persons);
+
+			return true;
+
 		} else {
 			Toast.makeText(HyyDLApplication.getContext(), "You input nothing",
 					Toast.LENGTH_SHORT).show();
 		}
+		return false;
 
 	}
 

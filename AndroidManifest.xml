@@ -30,17 +30,21 @@
             android:name="com.example.hyydatalist.activity.EditActivity"
             android:parentActivityName="com.example.hyydatalist.activity.MainActivity"
             android:screenOrientation="portrait" >
+
+            <!-- meta-data 用于支持 support 4.0 以及一下来指明上级活动 -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.hyydatalist.activity.MainActivity" />
         </activity>
         <activity
             android:name="com.example.hyydatalist.activity.AlarmConfigActivity"
-            android:parentActivityName="com.example.hyydatalist.activity.MainActivity"
+            android:parentActivityName="com.example.hyydatalist.activity.EditActivity"
             android:screenOrientation="portrait" >
+
+            <!-- meta-data 用于支持 support 4.0 以及一下来指明上级活动 -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.hyydatalist.activity.MainActivity" />
+                android:value="com.example.hyydatalist.activity.EditActivity" />
         </activity>
 
         <service android:name="com.example.hyydatalist.service.TimeWatchService" >

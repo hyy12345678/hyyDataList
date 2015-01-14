@@ -4,24 +4,22 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/action_settings"
+        hyyDataList:showAsAction="never"/>
     <item
         android:id="@+id/action_photo"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_photo"/>
-    
+        android:title="@string/action_photo"
+        hyyDataList:showAsAction="never"/>
     <item
         android:id="@+id/action_weather"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_weather"/>
-    
+        android:title="@string/action_weather"
+        hyyDataList:showAsAction="never"/>
     <item
         android:id="@+id/action_add"
+        android:icon="@drawable/ic_action_new"
         android:title="@string/add_new"
-        hyyDataList:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_new"/>
+        hyyDataList:showAsAction="always"/>
 
 </menu>

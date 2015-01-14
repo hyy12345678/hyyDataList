@@ -25,5 +25,9 @@
     <string name="day5">Friday</string>
     <string name="day6">Saturday</string>
     
+    <string name="action_alarm">Alarm</string>
+    
+    <string name="action_cont_del">Delete</string>
+    
 
 </resources>
