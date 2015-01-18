@@ -39,7 +39,7 @@ public class AlarmConfigActivity extends ActionBarActivity {
 
 	Button btnResume;
 
-	String messageId;
+	Long messageId;
  
 	// Day of week textview
 	TextView tvDay0;
@@ -76,7 +76,7 @@ public class AlarmConfigActivity extends ActionBarActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		messageId = String.valueOf(getIntent().getLongExtra("messageId", 0));
+		messageId = getIntent().getLongExtra("messageId", 0);
 		hourOfDay = String.valueOf(tp.getCurrentHour());
 		minute = String.valueOf(tp.getCurrentMinute());
 

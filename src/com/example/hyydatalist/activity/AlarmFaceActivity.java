@@ -13,7 +13,7 @@ import android.app.Activity;
 
 public class AlarmFaceActivity extends Activity {
 
-	String messageId;
+	Long messageId;
 
 	TextView tvtest;
 	@Override
@@ -21,7 +21,7 @@ public class AlarmFaceActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alarm_face);
 
-		messageId = getIntent().getStringExtra("messageId");
+		messageId = getIntent().getLongExtra("messageId",-1L);
 		tvtest = (TextView) findViewById(R.id.alarm_face_content);
 
 	}

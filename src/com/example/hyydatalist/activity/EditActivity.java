@@ -25,12 +25,12 @@ public class EditActivity extends ActionBarActivity {
 
 	String title;
 	String shortcut;
-	String id;
+	Long id;
 	String content;
 	int ALARM_MENU = 0;
 
-	static String savedId;
-
+	static Long savedId;
+	
 	Messages savedMessage = null;
 
 	@Override
@@ -49,7 +49,7 @@ public class EditActivity extends ActionBarActivity {
 			id = savedId;
 
 		} else {
-			id = getIntent().getStringExtra("id");
+			id = getIntent().getLongExtra("id", -1L);
 		}
 
 		Log.i("test", "type:" + type);
@@ -91,7 +91,7 @@ public class EditActivity extends ActionBarActivity {
 		super.onPrepareOptionsMenu(menu);
 
 		MenuItem item = menu.getItem(ALARM_MENU);
-		if (null == id || id.isEmpty()) {
+		if (id == -1L) {
 
 			item.setVisible(false);
 		} else {
@@ -105,13 +105,13 @@ public class EditActivity extends ActionBarActivity {
 
 		Intent intent = new Intent(HyyDLApplication.getContext(),
 				AlarmConfigActivity.class);
-		intent.putExtra("messageId", Long.valueOf(id));
+		intent.putExtra("messageId", id);
 		this.startActivity(intent);
 	}
 
-	private void findItemById(String id) {
+	private void findItemById(Long id) {
 		// TODO Auto-generated method stub
-		if ("".equals(id)) {
+		if (id == -1L) {
 			title = "";
 			shortcut = "";
 			content = "";
@@ -158,7 +158,7 @@ public class EditActivity extends ActionBarActivity {
 
 			// Messages person = new Messages();
 
-			if ("".equals(id)) {
+			if (-1L == id) {
 				savedMessage = new Messages();
 			}
 

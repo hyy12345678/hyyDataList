@@ -36,7 +36,8 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 	private List<Messages> list;
 	private List<Messages> listWhole;
 	private Handler handler;
-	private Map<String, Alarms> mapAlarms;
+	private Map<Long, Alarms> mapAlarms;
+	
 	private int isCheckBoxShown = View.GONE;
 	private boolean isCheckBoxReset = false;
 
@@ -81,6 +82,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			// convertView.findViewById(R.id.ItemTitle);
 			// holder.shortcut = (TextView) convertView
 			// .findViewById(R.id.ItemShortcut);
+			
 			holder.checkBox = (CheckBox) convertView
 					.findViewById(R.id.ItemCheckBox);
 
@@ -101,6 +103,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 
 		// holder.title.setText((String) list.get(position).getTitle());
 		// holder.shortcut.setText((String) list.get(position).getShortcut());
+		
 		holder.checkBox.setVisibility(isCheckBoxShown);
 		if (isCheckBoxReset) {
 			holder.checkBox.setChecked(false);
@@ -115,7 +118,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			holder.alarmTime.setText("No Alarm");
 			holder.alarmDay.setText("You may add one");
 		} else {
-			Alarms alarm = mapAlarms.get(list.get(position).getId().toString());
+			Alarms alarm = mapAlarms.get(list.get(position).getId());
 
 			String alarmTime = alarm.getAlarmtime();
 			String alarmDay = alarm.getDayofweek();
@@ -137,9 +140,8 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			holder.toggleAlarm.setChecked(false);
 		}
 
-		// final boolean isChecked = holder.toggleAlarm.isChecked();
 		final int messageIdInt = list.get(position).getId().intValue();
-		final String messageId = list.get(position).getId().toString();
+		final Long messageId = list.get(position).getId();
 
 		holder.toggleAlarm.setOnClickListener(new OnClickListener() {
 
@@ -165,7 +167,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		return convertView;
 	}
 
-	private void switchAlarmStatus(String messageId) {
+	private void switchAlarmStatus(Long messageId) {
 
 		String isPause = DatabaseManager
 				.getInstance(HyyDLApplication.getContext())
@@ -193,7 +195,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 				List<Alarms> listAlarms = DatabaseManager.getInstance(mContext)
 						.queryAlarmsWithoutCondition();
 
-				mapAlarms = new HashMap<String, Alarms>();
+				mapAlarms = new HashMap<Long, Alarms>();
 				for (Alarms alarm : listAlarms) {
 					mapAlarms.put(alarm.getMessageid(), alarm);
 				}
@@ -254,6 +256,9 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 
 	}
 
+	/***
+	 * To do change delete logic
+	 */
 	public void deleteSelected() {
 
 		for (Entry<Integer, Boolean> en : deleteItems.entrySet()) {
@@ -266,12 +271,12 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 
 			Messages selected = DatabaseManager
 					.getInstance(HyyDLApplication.getContext())
-					.queryMessageById(en.getKey().toString()).get(0);
+					.queryMessageById(en.getKey().longValue()).get(0);
 
 			if (selected.getAlarmstatus() != null) {
 				Alarms alarm = DatabaseManager
 						.getInstance(HyyDLApplication.getContext())
-						.queryAlarmById(selected.getId().toString()).get(0);
+						.queryAlarmById(selected.getId().longValue()).get(0);
 
 				DatabaseManager.getInstance(HyyDLApplication.getContext())
 						.deleteAlarm(alarm);
@@ -280,6 +285,9 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			DatabaseManager.getInstance(HyyDLApplication.getContext())
 					.deleteMessage(selected);
 		}
+		
+		//IMPT clear the deleteItems,avoid refresh error
+		deleteItems.clear();
 		
 		getData();
 

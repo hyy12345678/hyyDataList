@@ -58,7 +58,7 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 	/***
 	 * go to alarm face
 	 */
-	private void startAlarmFace(String messageId) {
+	private void startAlarmFace(Long messageId) {
 		// TODO Auto-generated method stub
 		Intent intent = new Intent(HyyDLApplication.getContext(),
 				AlarmFaceActivity.class);
@@ -86,7 +86,7 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 		return isTimeHitted && isDayHitted;
 	}
 
-	private void startNotification(String messageId) {
+	private void startNotification(Long messageId) {
 
 		findItemById(messageId);
 
@@ -123,7 +123,7 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 		mNotificationManager.notify(HyyConstants.mId, noti);
 	}
 
-	private void findItemById(String id) {
+	private void findItemById(Long id) {
 		// TODO Auto-generated method stub
 		List<Messages> selectedMessage = DatabaseManager.getInstance(
 				HyyDLApplication.getContext()).queryMessageById(id);

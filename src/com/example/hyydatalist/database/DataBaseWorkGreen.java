@@ -43,7 +43,7 @@ public class DataBaseWorkGreen implements IDataBaseWork {
 	}
 
 	@Override
-	public List<Messages> queryMessageById(String conditon) {
+	public List<Messages> queryMessageById(Long conditon) {
 		// TODO Auto-generated method stub
 		return messageDao.queryBuilder().where(Properties.Id.eq(conditon))
 				.list();
@@ -101,7 +101,7 @@ public class DataBaseWorkGreen implements IDataBaseWork {
 	}
 
 	@Override
-	public List<Alarms> queryAlarmById(String messageId) {
+	public List<Alarms> queryAlarmById(Long messageId) {
 		// TODO Auto-generated method stub
 
 		Log.i(HyyConstants.HYY_TAG, "messageId is:" + messageId);
@@ -112,7 +112,7 @@ public class DataBaseWorkGreen implements IDataBaseWork {
 	}
 
 	@Override
-	public void pauseAlarm(String messageId) {
+	public void pauseAlarm(Long messageId) {
 		// TODO Auto-generated method stub
 		Alarms alarm = this.queryAlarmById(messageId).get(0);
 		alarm.setIspause(HyyConstants.ALARM_STATUS_ONE);
@@ -125,7 +125,7 @@ public class DataBaseWorkGreen implements IDataBaseWork {
 	}
 
 	@Override
-	public void resumeAlarm(String messageId) {
+	public void resumeAlarm(Long messageId) {
 		// TODO Auto-generated method stub
 		Alarms alarm = this.queryAlarmById(messageId).get(0);
 		alarm.setIspause(HyyConstants.ALARM_STATUS_ZERO);

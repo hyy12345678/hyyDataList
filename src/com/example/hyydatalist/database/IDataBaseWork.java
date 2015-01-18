@@ -14,7 +14,7 @@ public interface IDataBaseWork {
 	
 	public List<Messages> queryMessage();
 	
-	public List<Messages> queryMessageById(String conditon);
+	public List<Messages> queryMessageById(Long conditon);
 	
 	public void saveOrUpdateMessage(List<Messages> persons);
 	
@@ -28,10 +28,10 @@ public interface IDataBaseWork {
 	
 	public void deleteAlarm(Alarms alarm);
 	
-	public List<Alarms> queryAlarmById(String messageId);
+	public List<Alarms> queryAlarmById(Long messageId);
 	
-	public void pauseAlarm(String messageId);
+	public void pauseAlarm(Long messageId);
 	
-	public void resumeAlarm(String messageId);
+	public void resumeAlarm(Long messageId);
 
 }

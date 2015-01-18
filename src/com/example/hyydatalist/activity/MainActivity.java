@@ -1,5 +1,6 @@
 package com.example.hyydatalist.activity;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,27 +45,9 @@ public class MainActivity extends ActionBarActivity {
 	ListView listView;
 	EditText etSearchCondition;
 
-	@SuppressLint("HandlerLeak")
-	Handler handler = new Handler() {
-		public void handleMessage(Message msg) {
+	private Handler handler;
 
-			switch (msg.what) {
-			case HyyConstants.REFRESH_LIST:
-				Toast.makeText(
-						HyyDLApplication.getContext().getApplicationContext(),
-						"Refresh list", Toast.LENGTH_SHORT).show();
-				initList();
-				break;
-
-			default:
-				break;
-			}
-
-		};
-	};
-
-	HyyDataListAdapter adapter = new HyyDataListAdapter(HyyDLApplication
-			.getContext().getApplicationContext(), handler);
+	private HyyDataListAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +58,7 @@ public class MainActivity extends ActionBarActivity {
 
 		initListener();
 
-		// do inital work according to different sys ver
+		// do inital work according to different sys version
 		initByVersion();
 
 	}
@@ -86,7 +69,7 @@ public class MainActivity extends ActionBarActivity {
 	private void initByVersion() {
 		// TODO Auto-generated method stub
 		if (HyyCommonUtils.getHandSetSDKVer() < 11) {
-
+			// work for UI below 4.0
 			itemOnLongClick();
 		} else {
 			// only works fine with 4.0
@@ -112,7 +95,7 @@ public class MainActivity extends ActionBarActivity {
 				menuKeyField.setBoolean(mconfig, false);
 			}
 		} catch (Exception ex) {
-			Log.i("hyy", "disable menu failed");
+			Log.i(HyyConstants.HYY_TAG, "disable menu failed");
 		}
 	}
 
@@ -142,7 +125,7 @@ public class MainActivity extends ActionBarActivity {
 
 				MenuInflater inflater = mode.getMenuInflater();
 				inflater.inflate(R.menu.contextual_main, menu);
-				
+
 				adapter.showCheckBox();
 
 				return true;
@@ -156,7 +139,7 @@ public class MainActivity extends ActionBarActivity {
 
 					adapter.deleteSelected();
 					mode.finish();
-					
+
 					return true;
 
 				default:
@@ -175,12 +158,9 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
-	
-
 	/***
 	 * used for floating context menu
 	 */
-
 	private void itemOnLongClick() { // TODO Auto-generated method stub
 		listView.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 
@@ -207,7 +187,7 @@ public class MainActivity extends ActionBarActivity {
 			if (selected.getAlarmstatus() != null) {
 				Alarms alarm = DatabaseManager
 						.getInstance(HyyDLApplication.getContext())
-						.queryAlarmById(selected.getId().toString()).get(0);
+						.queryAlarmById(selected.getId().longValue()).get(0);
 
 				DatabaseManager.getInstance(HyyDLApplication.getContext())
 						.deleteAlarm(alarm);
@@ -275,11 +255,11 @@ public class MainActivity extends ActionBarActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				Messages map = (Messages) listView.getItemAtPosition(arg2);
+				Messages message = (Messages) listView.getItemAtPosition(arg2);
 
-				String name = map.getTitle();
-				String age = map.getShortcut();
-				String id = map.getId().toString();
+				String name = message.getTitle();
+				String age = message.getShortcut();
+				Long idd = message.getId();
 
 				Toast.makeText(HyyDLApplication.getContext(),
 						"Name Hyy :" + name + "; Age Hyy :" + age,
@@ -289,7 +269,7 @@ public class MainActivity extends ActionBarActivity {
 						EditActivity.class);
 				intent.putExtra("title", name);
 				intent.putExtra("shortcut", age);
-				intent.putExtra("id", id);
+				intent.putExtra("id", idd);
 				intent.putExtra("forwardType", HyyConstants.FORWARD_EDIT);
 
 				startActivity(intent);
@@ -332,7 +312,7 @@ public class MainActivity extends ActionBarActivity {
 				EditActivity.class);
 		intent.putExtra("title", "");
 		intent.putExtra("shortcut", "");
-		intent.putExtra("id", "");
+		intent.putExtra("id", -1L);
 		intent.putExtra("forwardType", HyyConstants.FORWARD_NEW);
 
 		startActivity(intent);
@@ -346,15 +326,23 @@ public class MainActivity extends ActionBarActivity {
 		adapter.getData();
 	}
 
+	/***
+	 * initial ListView
+	 */
 	private void initList() {
-		// adapter = new HyyDataListAdapter(HyyDLApplication.getContext());
 		listView.setAdapter(adapter);
 	}
 
 	private void init() {
-		// TODO Auto-generated method stub
+
+		// init UI elements
 		listView = (ListView) findViewById(R.id.list);
 		etSearchCondition = (EditText) findViewById(R.id.tvSearchCondititon);
+
+		// init handler&adapter
+		handler = new MyHandler(this);
+		adapter = new HyyDataListAdapter(HyyDLApplication.getContext()
+				.getApplicationContext(), handler);
 
 	}
 
@@ -388,4 +376,47 @@ public class MainActivity extends ActionBarActivity {
 		return false; // should never happen
 	}
 
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		handler.removeCallbacksAndMessages(null);
+		super.onDestroy();
+	}
+
+	/***
+	 * inner class for hander
+	 * 
+	 * @author hyylj
+	 * 
+	 */
+	static class MyHandler extends Handler {
+
+		// Weakreference to the outer class's instance
+		private WeakReference<MainActivity> mouter;
+
+		public MyHandler(MainActivity main) {
+			// TODO Auto-generated constructor stub
+			mouter = new WeakReference<MainActivity>(main);
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+
+			MainActivity outer = mouter.get();
+
+			switch (msg.what) {
+			case HyyConstants.REFRESH_LIST:
+				Toast.makeText(
+						HyyDLApplication.getContext().getApplicationContext(),
+						"Refresh list", Toast.LENGTH_SHORT).show();
+				if (outer != null) {
+					outer.initList();
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
 }
