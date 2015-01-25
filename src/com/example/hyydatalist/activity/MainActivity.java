@@ -116,7 +116,9 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onDestroyActionMode(ActionMode mode) {
 				// TODO Auto-generated method stub
-				adapter.clearCheckBox();
+				adapter.showCheckOrNot(false);
+				etSearchCondition.setVisibility(View.VISIBLE);
+
 			}
 
 			@Override
@@ -126,7 +128,8 @@ public class MainActivity extends ActionBarActivity {
 				MenuInflater inflater = mode.getMenuInflater();
 				inflater.inflate(R.menu.contextual_main, menu);
 
-				adapter.showCheckBox();
+				adapter.showCheckOrNot(true);
+				etSearchCondition.setVisibility(View.GONE);
 
 				return true;
 			}
@@ -152,6 +155,10 @@ public class MainActivity extends ActionBarActivity {
 			public void onItemCheckedStateChanged(ActionMode mode,
 					int position, long id, boolean checked) {
 				// TODO Auto-generated method stub
+
+				Log.i("big found", "you click " + position + " item");
+				adapter.updateSelected(position, id, listView, checked);
+
 			}
 
 		});
@@ -419,4 +426,5 @@ public class MainActivity extends ActionBarActivity {
 			}
 		}
 	}
+
 }

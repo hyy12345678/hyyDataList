@@ -24,12 +24,8 @@ import android.widget.Toast;
 
 public class TimeWatchReceiver extends BroadcastReceiver {
 
-	// String title;
-	// String shortcut;
-
 	String title = HyyDLApplication.getContext().getResources()
 			.getString(R.string.app_name);
-	String content;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -44,14 +40,12 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 					Toast.makeText(HyyDLApplication.getContext(),
 							"It is the time! " + alarm.getAlarmtime(),
 							Toast.LENGTH_SHORT).show();
-					startNotification(alarm.getMessageid());
+					startNotification(alarm);
 
 					// go to alarm face
 					startAlarmFace(alarm.getMessageid());
 				}
-
 			}
-
 		}
 	}
 
@@ -86,26 +80,30 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 		return isTimeHitted && isDayHitted;
 	}
 
-	private void startNotification(Long messageId) {
+	private void startNotification(Alarms alarm) {
 
-		findItemById(messageId);
+		String content = findItemById(alarm);
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				HyyDLApplication.getContext()).setSmallIcon(R.drawable.xiaoqimao1)
 				.setContentTitle(title).setContentText(content);
-		// Creates an explicit intent for an Activity in your app
+		/*
+		 *  Creates an explicit intent for an Activity in your app
+		 */
 		Intent resultIntent = new Intent(HyyDLApplication.getContext(),
 				MainActivity.class);
 
-		// The stack builder object will contain an artificial back stack for
-		// the
-		// started Activity.
-		// This ensures that navigating backward from the Activity leads out of
-		// your application to the Home screen.
+		/* 
+		 * The stack builder object will contain an artificial back stack for
+		 * the started Activity. This ensures that navigating backward from the
+		 * Activity leads out of your application to the Home screen.
+		 */
 		TaskStackBuilder stackBuilder = TaskStackBuilder
 				.create(HyyDLApplication.getContext());
+		
 		// Adds the back stack for the Intent (but not the Intent itself)
 		stackBuilder.addParentStack(MainActivity.class);
+		
 		// Adds the Intent that starts the Activity to the top of the stack
 		stackBuilder.addNextIntent(resultIntent);
 		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
@@ -113,8 +111,8 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 		mBuilder.setContentIntent(resultPendingIntent);
 		NotificationManager mNotificationManager = (NotificationManager) HyyDLApplication
 				.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		
 		// mId allows you to update the notification later on.
-
 		Notification noti = mBuilder.build();
 		noti.flags = Notification.FLAG_AUTO_CANCEL;
 		noti.flags |= Notification.FLAG_INSISTENT;
@@ -123,13 +121,10 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 		mNotificationManager.notify(HyyConstants.mId, noti);
 	}
 
-	private void findItemById(Long id) {
-		// TODO Auto-generated method stub
-		List<Messages> selectedMessage = DatabaseManager.getInstance(
-				HyyDLApplication.getContext()).queryMessageById(id);
-		// title = selectedMessage.get(0).getTitle();
-		// shortcut = selectedMessage.get(0).getShortcut();
-		content = selectedMessage.get(0).getContent();
+	private String findItemById(Alarms alarm) {
+				
+		Messages relatedMessage = alarm.getMessages();
+		return relatedMessage.getContent();
 	}
 
 }

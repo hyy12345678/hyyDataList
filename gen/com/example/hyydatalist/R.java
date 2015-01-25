@@ -1084,17 +1084,18 @@ containing a value of this type.
         public static final int ic_action_new=0x7f02005c;
         public static final int ic_action_time=0x7f02005d;
         public static final int ic_action_trash=0x7f02005e;
-        public static final int ic_launcher=0x7f02005f;
-        public static final int toggle_selector=0x7f020060;
-        public static final int xiaoqimao1=0x7f020061;
-        public static final int xiaoqimao2=0x7f020062;
+        public static final int ic_check=0x7f02005f;
+        public static final int ic_launcher=0x7f020060;
+        public static final int ic_uncheck=0x7f020061;
+        public static final int toggle_selector=0x7f020062;
+        public static final int xiaoqimao1=0x7f020063;
+        public static final int xiaoqimao2=0x7f020064;
     }
     public static final class id {
         public static final int AlarmLayout=0x7f05004f;
         public static final int CheckboxLayout=0x7f05004d;
         public static final int ItemAlarmDays=0x7f050052;
         public static final int ItemAlarmTime=0x7f050051;
-        public static final int ItemCheckBox=0x7f05004e;
         public static final int ItemContent=0x7f050054;
         public static final int ItemToggleAlarm=0x7f050050;
         public static final int MessageLayout=0x7f050053;
@@ -1147,6 +1148,7 @@ containing a value of this type.
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
+        public static final int ivCheckOrNot=0x7f05004e;
         public static final int list=0x7f05004c;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;

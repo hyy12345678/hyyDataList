@@ -19,6 +19,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -37,9 +39,8 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 	private List<Messages> listWhole;
 	private Handler handler;
 	private Map<Long, Alarms> mapAlarms;
-	
-	private int isCheckBoxShown = View.GONE;
-	private boolean isCheckBoxReset = false;
+
+	private boolean isCheckOrNotShown = false;
 
 	private Map<Integer, Boolean> deleteItems = new HashMap<Integer, Boolean>();
 
@@ -47,7 +48,6 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		// TODO Auto-generated constructor stub
 		this.mContext = context;
 		this.handler = handler;
-		// getData();
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 	@Override
 	public long getItemId(int arg0) {
 		// TODO Auto-generated method stub
-		return 0;
+		return list.get(arg0).getId();
 	}
 
 	@Override
@@ -76,15 +76,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = LayoutInflater.from(mContext).inflate(
-					R.layout.list_view, parent,false);
-
-			// holder.title = (TextView)
-			// convertView.findViewById(R.id.ItemTitle);
-			// holder.shortcut = (TextView) convertView
-			// .findViewById(R.id.ItemShortcut);
-			
-			holder.checkBox = (CheckBox) convertView
-					.findViewById(R.id.ItemCheckBox);
+					R.layout.list_view, parent, false);
 
 			holder.content = (TextView) convertView
 					.findViewById(R.id.ItemContent);
@@ -95,21 +87,40 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 
 			holder.toggleAlarm = (ToggleButton) convertView
 					.findViewById(R.id.ItemToggleAlarm);
+
+			holder.checkOrNot = (ImageView) convertView
+					.findViewById(R.id.ivCheckOrNot);
+
 			convertView.setTag(holder);
 
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		// holder.title.setText((String) list.get(position).getTitle());
-		// holder.shortcut.setText((String) list.get(position).getShortcut());
-		
-		holder.checkBox.setVisibility(isCheckBoxShown);
-		if (isCheckBoxReset) {
-			holder.checkBox.setChecked(false);
+		// divide item check or not,show or hide
+		if (list.get(position).getIsChecked()) {
+
+			holder.checkOrNot.setImageDrawable(HyyDLApplication.getContext()
+					.getResources().getDrawable(R.drawable.ic_check));
+
+		} else {
+			holder.checkOrNot.setImageDrawable(HyyDLApplication.getContext()
+					.getResources().getDrawable(R.drawable.ic_uncheck));
 		}
 
-		holder.content.setText((String) list.get(position).getContent());
+		final int messageIdInt = list.get(position).getId().intValue();
+
+		// store delete info
+		deleteItems.put(messageIdInt, list.get(position).getIsChecked());
+
+		if (isCheckOrNotShown) {
+			holder.checkOrNot.setVisibility(View.VISIBLE);
+		} else {
+			holder.checkOrNot.setVisibility(View.GONE);
+		}
+
+		// store content
+		holder.content.setText(list.get(position).getContent());
 
 		// get related alarm
 		String status = list.get(position).getAlarmstatus();
@@ -140,7 +151,6 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			holder.toggleAlarm.setChecked(false);
 		}
 
-		final int messageIdInt = list.get(position).getId().intValue();
 		final Long messageId = list.get(position).getId();
 
 		holder.toggleAlarm.setOnClickListener(new OnClickListener() {
@@ -151,18 +161,6 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 				switchAlarmStatus(messageId);
 			}
 		});
-
-		holder.checkBox
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-						// TODO Auto-generated method stub
-						deleteItems.put(messageIdInt, isChecked);
-
-					}
-				});
 
 		return convertView;
 	}
@@ -245,17 +243,6 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		return newList;
 	}
 
-	public void showCheckBox() {
-		this.isCheckBoxShown = View.VISIBLE;
-		this.isCheckBoxReset = false;
-	}
-
-	public void clearCheckBox() {
-		this.isCheckBoxShown = View.GONE;
-		this.isCheckBoxReset = true;
-
-	}
-
 	/***
 	 * To do change delete logic
 	 */
@@ -266,8 +253,8 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			if (!en.getValue()) {
 				continue;
 			}
-			
-			Log.i("hello", "messageId:"+en.getKey());
+
+			Log.i("hello", "messageId:" + en.getKey());
 
 			Messages selected = DatabaseManager
 					.getInstance(HyyDLApplication.getContext())
@@ -285,11 +272,61 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 			DatabaseManager.getInstance(HyyDLApplication.getContext())
 					.deleteMessage(selected);
 		}
-		
-		//IMPT clear the deleteItems,avoid refresh error
+
+		// IMPT clear the deleteItems,avoid refresh error
 		deleteItems.clear();
-		
+
 		getData();
 
 	}
+
+	/**
+	 * For only Action mode create and destroy use
+	 * 
+	 * @param isShown
+	 */
+	public void showCheckOrNot(boolean isShown) {
+		this.isCheckOrNotShown = isShown;
+
+		for (Messages me : list) {
+			me.setIsChecked(false);
+		}
+
+	}
+
+	/**
+	 * update selected item
+	 * 
+	 * @param position
+	 * @param listView
+	 * @param checked
+	 */
+	public void updateSelected(int position, long id, ListView listView,
+			boolean checked) {
+		list.get(position).setIsChecked(checked);
+		// notifyDataSetChanged();
+
+		// test for single row update
+		updateSingleRow(listView, id);
+	}
+
+	/**
+	 * ListView single row update
+	 * 
+	 * @param listView
+	 * @param mess
+	 */
+	private void updateSingleRow(ListView listView, long id) {
+
+		if (listView != null) {
+			int start = listView.getFirstVisiblePosition();
+			for (int i = start, j = listView.getLastVisiblePosition(); i <= j; i++)
+				if (id == ((Messages) listView.getItemAtPosition(i)).getId()) {
+					View view = listView.getChildAt(i - start);
+					getView(i, view, listView);
+					break;
+				}
+		}
+	}
+
 }
