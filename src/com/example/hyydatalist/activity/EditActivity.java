@@ -11,6 +11,8 @@ import com.hyy.hyydatalist.generator.Messages;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.Selection;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -132,6 +134,10 @@ public class EditActivity extends ActionBarActivity {
 		etTitle.setText(title);
 		etShortcut.setText(shortcut);
 		etContent.setText(content);
+		
+		//set cursor to last
+		Editable etext = etContent.getText();
+		Selection.setSelection(etext, etext.length());
 	}
 
 	private void init() {

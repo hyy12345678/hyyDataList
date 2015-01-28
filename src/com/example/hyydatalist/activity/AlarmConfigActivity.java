@@ -40,7 +40,7 @@ public class AlarmConfigActivity extends ActionBarActivity {
 	Button btnResume;
 
 	Long messageId;
- 
+
 	// Day of week textview
 	TextView tvDay0;
 	TextView tvDay1;
@@ -69,17 +69,20 @@ public class AlarmConfigActivity extends ActionBarActivity {
 
 		init();
 		initListener();
+		
+		initViews();
+		
+		
+		
 
 	}
 
-	@Override
-	protected void onResume() {
+	private void initViews() {
 		// TODO Auto-generated method stub
-		super.onResume();
 		messageId = getIntent().getLongExtra("messageId", 0);
 		hourOfDay = String.valueOf(tp.getCurrentHour());
 		minute = String.valueOf(tp.getCurrentMinute());
-
+		
 		List<Alarms> saveAlarmLst = DatabaseManager.getInstance(
 				HyyDLApplication.getContext()).queryAlarmById(messageId);
 
@@ -126,8 +129,8 @@ public class AlarmConfigActivity extends ActionBarActivity {
 			tp.setCurrentHour(0);
 			tp.setCurrentMinute(0);
 		}
-
 	}
+
 
 	private void refreshDays() {
 		// TODO Auto-generated method stub
@@ -214,9 +217,6 @@ public class AlarmConfigActivity extends ActionBarActivity {
 
 			@Override
 			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-				// TODO Auto-generated method stub
-				Log.i("hyy", "hourOfDay:" + hourOfDay);
-				Log.i("hyy", "minute:" + minute);
 				refreshTime(hourOfDay, minute);
 			}
 		});

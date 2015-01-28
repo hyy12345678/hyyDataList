@@ -96,7 +96,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-
+		
 		// divide item check or not,show or hide
 		if (list.get(position).getIsChecked()) {
 
@@ -304,7 +304,6 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 	public void updateSelected(int position, long id, ListView listView,
 			boolean checked) {
 		list.get(position).setIsChecked(checked);
-		// notifyDataSetChanged();
 
 		// test for single row update
 		updateSingleRow(listView, id);

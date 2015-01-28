@@ -8,18 +8,29 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <EditText
-        android:id="@+id/tvSearchCondititon"
+    <LinearLayout
+        android:id="@+id/llSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textImeMultiLine"
-        android:hint="@string/search" />
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
+
+        <EditText
+            android:id="@+id/tvSearchCondititon"
+            style="@style/my_edittext_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search"
+            android:inputType="textImeMultiLine" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvSearchCondititon"
+        android:layout_below="@id/llSearch"
         android:divider="#B5B5B5"
         android:dividerHeight="1dp" />
 

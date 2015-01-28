@@ -48,7 +48,11 @@ public class AutoExtViewGroup extends ViewGroup {
 			stageHeight = child.getMeasuredHeight();
 			if (stageWidth >= wholeWidth) {
 				stages++;
+				stageWidth = child.getMeasuredWidth();
 			}
+
+			Log.i(HyyConstants.HYY_TAG, "i:" + i + ",wholeWidth:" + wholeWidth
+					+ ",stageWidth:" + stageWidth+",stageHeight:"+stageHeight+",stage:"+stages);
 		}
 
 		Log.i(HyyConstants.HYY_TAG, "stages:" + stages);

@@ -1080,27 +1080,30 @@ containing a value of this type.
         public static final int bell_uncheck=0x7f020058;
         public static final int btn_day_normal=0x7f020059;
         public static final int btn_day_unselected=0x7f02005a;
-        public static final int ic_action_add_alarm=0x7f02005b;
-        public static final int ic_action_new=0x7f02005c;
-        public static final int ic_action_time=0x7f02005d;
-        public static final int ic_action_trash=0x7f02005e;
-        public static final int ic_check=0x7f02005f;
-        public static final int ic_launcher=0x7f020060;
-        public static final int ic_uncheck=0x7f020061;
-        public static final int toggle_selector=0x7f020062;
-        public static final int xiaoqimao1=0x7f020063;
-        public static final int xiaoqimao2=0x7f020064;
+        public static final int edit_normal=0x7f02005b;
+        public static final int edit_press=0x7f02005c;
+        public static final int ic_action_add_alarm=0x7f02005d;
+        public static final int ic_action_new=0x7f02005e;
+        public static final int ic_action_time=0x7f02005f;
+        public static final int ic_action_trash=0x7f020060;
+        public static final int ic_check=0x7f020061;
+        public static final int ic_launcher=0x7f020062;
+        public static final int ic_uncheck=0x7f020063;
+        public static final int selector_edittext_bg=0x7f020064;
+        public static final int toggle_selector=0x7f020065;
+        public static final int xiaoqimao1=0x7f020066;
+        public static final int xiaoqimao2=0x7f020067;
     }
     public static final class id {
-        public static final int AlarmLayout=0x7f05004f;
-        public static final int CheckboxLayout=0x7f05004d;
-        public static final int ItemAlarmDays=0x7f050052;
-        public static final int ItemAlarmTime=0x7f050051;
-        public static final int ItemContent=0x7f050054;
-        public static final int ItemToggleAlarm=0x7f050050;
-        public static final int MessageLayout=0x7f050053;
-        public static final int action_add=0x7f05005a;
-        public static final int action_alarm=0x7f050057;
+        public static final int AlarmLayout=0x7f050050;
+        public static final int CheckboxLayout=0x7f05004e;
+        public static final int ItemAlarmDays=0x7f050053;
+        public static final int ItemAlarmTime=0x7f050052;
+        public static final int ItemContent=0x7f050055;
+        public static final int ItemToggleAlarm=0x7f050051;
+        public static final int MessageLayout=0x7f050054;
+        public static final int action_add=0x7f05005b;
+        public static final int action_alarm=0x7f050058;
         public static final int action_bar=0x7f05001c;
         public static final int action_bar_activity_content=0x7f050015;
         public static final int action_bar_container=0x7f05001b;
@@ -1108,14 +1111,14 @@ containing a value of this type.
         public static final int action_bar_root=0x7f05001a;
         public static final int action_bar_subtitle=0x7f050023;
         public static final int action_bar_title=0x7f050022;
-        public static final int action_cont_del=0x7f050056;
+        public static final int action_cont_del=0x7f050057;
         public static final int action_context_bar=0x7f05001d;
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_photo=0x7f050058;
-        public static final int action_settings=0x7f050055;
-        public static final int action_weather=0x7f050059;
+        public static final int action_photo=0x7f050059;
+        public static final int action_settings=0x7f050056;
+        public static final int action_weather=0x7f05005a;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int alarm_face_content=0x7f05003c;
         public static final int always=0x7f05000b;
@@ -1148,10 +1151,11 @@ containing a value of this type.
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
-        public static final int ivCheckOrNot=0x7f05004e;
-        public static final int list=0x7f05004c;
+        public static final int ivCheckOrNot=0x7f05004f;
+        public static final int list=0x7f05004d;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
+        public static final int llSearch=0x7f05004b;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
@@ -1179,7 +1183,7 @@ containing a value of this type.
         public static final int title=0x7f05002b;
         public static final int top_action_bar=0x7f050020;
         public static final int tpPicker=0x7f05003d;
-        public static final int tvSearchCondititon=0x7f05004b;
+        public static final int tvSearchCondititon=0x7f05004c;
         public static final int up=0x7f050021;
         public static final int useLogo=0x7f050003;
         public static final int withText=0x7f05000c;
@@ -1543,6 +1547,7 @@ containing a value of this type.
         public static final int Widget_AppCompat_ProgressBar=0x7f0b000a;
         public static final int Widget_AppCompat_ProgressBar_Horizontal=0x7f0b0009;
         public static final int Widget_AppCompat_Spinner_DropDown_ActionBar=0x7f0b0022;
+        public static final int my_edittext_style=0x7f0b008d;
     }
     public static final class styleable {
         /**  ============================================ 

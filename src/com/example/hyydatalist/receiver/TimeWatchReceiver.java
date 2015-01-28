@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.hyydatalist.R;
 import com.example.hyydatalist.activity.AlarmFaceActivity;
+import com.example.hyydatalist.activity.EditActivity;
 import com.example.hyydatalist.activity.MainActivity;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.constants.HyyConstants;
@@ -91,7 +92,9 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 		 *  Creates an explicit intent for an Activity in your app
 		 */
 		Intent resultIntent = new Intent(HyyDLApplication.getContext(),
-				MainActivity.class);
+				EditActivity.class);
+		resultIntent.putExtra("id", alarm.getMessageid());
+		resultIntent.putExtra("forwardType", HyyConstants.FORWARD_EDIT);
 
 		/* 
 		 * The stack builder object will contain an artificial back stack for
@@ -102,7 +105,7 @@ public class TimeWatchReceiver extends BroadcastReceiver {
 				.create(HyyDLApplication.getContext());
 		
 		// Adds the back stack for the Intent (but not the Intent itself)
-		stackBuilder.addParentStack(MainActivity.class);
+		stackBuilder.addParentStack(EditActivity.class);
 		
 		// Adds the Intent that starts the Activity to the top of the stack
 		stackBuilder.addNextIntent(resultIntent);
