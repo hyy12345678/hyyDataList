@@ -48,6 +48,7 @@ public class AutoExtViewGroup extends ViewGroup {
 			stageHeight = child.getMeasuredHeight();
 			if (stageWidth >= wholeWidth) {
 				stages++;
+				//reset stageWidth
 				stageWidth = child.getMeasuredWidth();
 			}
 
