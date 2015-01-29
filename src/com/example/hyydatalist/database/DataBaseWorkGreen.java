@@ -50,10 +50,15 @@ public class DataBaseWorkGreen implements IDataBaseWork {
 	}
 
 	@Override
-	public void saveOrUpdateMessage(List<Messages> messages) {
+	public void saveOrUpdateMessageList(List<Messages> messages) {
 		// TODO Auto-generated method stub
 		messageDao.insertOrReplaceInTx(messages);
 
+	}
+	
+	@Override
+	public Long saveOrUpdateMessage(Messages message){
+		return messageDao.insertOrReplace(message);
 	}
 
 	@Override

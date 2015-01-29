@@ -45,6 +45,9 @@ public class MainActivity extends ActionBarActivity {
 	ListView listView;
 	EditText etSearchCondition;
 
+	private int index;
+	private int top;
+
 	private Handler handler;
 
 	private HyyDataListAdapter adapter;
@@ -218,8 +221,8 @@ public class MainActivity extends ActionBarActivity {
 		switch (item.getItemId()) {
 
 		case 0:
-			Toast.makeText(HyyDLApplication.getContext(), "delete pressed",
-					Toast.LENGTH_SHORT).show();
+			// Toast.makeText(HyyDLApplication.getContext(), "delete pressed",
+			// Toast.LENGTH_SHORT).show();
 
 			List<Integer> list = new ArrayList<Integer>();
 			list.add(mstion);
@@ -230,8 +233,8 @@ public class MainActivity extends ActionBarActivity {
 			break;
 
 		case 1:
-			Toast.makeText(HyyDLApplication.getContext(), "Alarm pressed",
-					Toast.LENGTH_SHORT).show();
+			// Toast.makeText(HyyDLApplication.getContext(), "Alarm pressed",
+			// Toast.LENGTH_SHORT).show();
 
 			Messages selected = (Messages) adapter.getItem(mstion);
 
@@ -268,9 +271,12 @@ public class MainActivity extends ActionBarActivity {
 				String age = message.getShortcut();
 				Long idd = message.getId();
 
-				Toast.makeText(HyyDLApplication.getContext(),
-						"Name Hyy :" + name + "; Age Hyy :" + age,
-						Toast.LENGTH_SHORT).show();
+				// Toast.makeText(HyyDLApplication.getContext(),
+				// "Name Hyy :" + name + "; Age Hyy :" + age,
+				// Toast.LENGTH_SHORT).show();
+
+				// store last position in listView
+				saveIndexAndTopPosition();
 
 				Intent intent = new Intent(HyyDLApplication.getContext(),
 						EditActivity.class);
@@ -312,8 +318,11 @@ public class MainActivity extends ActionBarActivity {
 	 * Add new Message Intent
 	 */
 	private void createNewMessage() {
-		Toast.makeText(HyyDLApplication.getContext(), "Add a new item.",
-				Toast.LENGTH_SHORT).show();
+		// Toast.makeText(HyyDLApplication.getContext(), "Add a new item.",
+		// Toast.LENGTH_SHORT).show();
+
+		// set last press position to the end of listview
+		saveIndexAndTopPosition();
 
 		Intent intent = new Intent(HyyDLApplication.getContext(),
 				EditActivity.class);
@@ -338,6 +347,7 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private void initList() {
 		listView.setAdapter(adapter);
+		restoreIndexAndTopPosition();
 	}
 
 	private void init() {
@@ -391,6 +401,22 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	/***
+	 * save index and top position
+	 */
+	private void saveIndexAndTopPosition() {
+		index = listView.getFirstVisiblePosition();
+		View v = listView.getChildAt(0);
+		top = (v == null) ? 0 : v.getTop();
+	}
+
+	/***
+	 * restore index and top position
+	 */
+	private void restoreIndexAndTopPosition() {
+		listView.setSelectionFromTop(index, top);
+	}
+
+	/***
 	 * inner class for hander
 	 * 
 	 * @author hyylj
@@ -413,9 +439,9 @@ public class MainActivity extends ActionBarActivity {
 
 			switch (msg.what) {
 			case HyyConstants.REFRESH_LIST:
-				Toast.makeText(
-						HyyDLApplication.getContext().getApplicationContext(),
-						"Refresh list", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(
+				// HyyDLApplication.getContext().getApplicationContext(),
+				// "Refresh list", Toast.LENGTH_SHORT).show();
 				if (outer != null) {
 					outer.initList();
 				}

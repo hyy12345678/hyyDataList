@@ -5,7 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="add_new">Add New Item</string>
-    <string name="search">Search</string>
+    <string name="search">&#160;Search</string>
     <string name="hint_title">Please input a title</string>
     <string name="hint_shortcut">Please input a shortcut</string>
     <string name="hint_content">Say something</string>
@@ -28,6 +28,9 @@
     <string name="action_alarm">Alarm</string>
     
     <string name="action_cont_del">Delete</string>
+    
+    <string name="write_first">Please write something first</string>
+    <string name="may_add_one">You may add an alarm</string>
     
 
 </resources>

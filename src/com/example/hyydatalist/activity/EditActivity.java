@@ -1,15 +1,17 @@
 package com.example.hyydatalist.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.hyydatalist.R;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.database.DatabaseManager;
+import com.example.hyydatalist.utils.HyyCommonUtils;
 import com.hyy.hyydatalist.generator.Messages;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.Selection;
@@ -21,18 +23,14 @@ import android.widget.Toast;
 
 public class EditActivity extends ActionBarActivity {
 
-	EditText etTitle;
-	EditText etShortcut;
 	EditText etContent;
 
-	String title;
-	String shortcut;
 	Long id;
 	String content;
 	int ALARM_MENU = 0;
 
 	static Long savedId;
-	
+
 	Messages savedMessage = null;
 
 	@Override
@@ -77,11 +75,23 @@ public class EditActivity extends ActionBarActivity {
 		switch (item.getItemId()) {
 		case R.id.action_alarm:
 
-			Toast.makeText(HyyDLApplication.getContext(),
-					"You press Alarm btn!", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(HyyDLApplication.getContext(),
+			// "You press Alarm btn!", Toast.LENGTH_SHORT).show();
 			forwardAlarm();
 			return true;
-
+		
+		case android.R.id.home:
+			Intent upIntent = NavUtils.getParentActivityIntent(this);  
+	        if (NavUtils.shouldUpRecreateTask(this, upIntent)) {  
+	            TaskStackBuilder.create(this)  
+	                    .addNextIntentWithParentStack(upIntent)  
+	                    .startActivities();  
+	        } else {  
+	            upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  
+	            NavUtils.navigateUpTo(this, upIntent);  
+	        }  
+	        return true;  
+			
 		}
 
 		return false;
@@ -93,20 +103,30 @@ public class EditActivity extends ActionBarActivity {
 		super.onPrepareOptionsMenu(menu);
 
 		MenuItem item = menu.getItem(ALARM_MENU);
-		if (id == -1L) {
-
-			item.setVisible(false);
-		} else {
-			item.setVisible(true);
-		}
+		// if (id == -1L) {
+		//
+		// item.setVisible(false);
+		// } else {
+		// item.setVisible(true);
+		// }
 
 		return true;
 	}
 
 	private void forwardAlarm() {
 
+		if (-1 == id && !saveItem()) {
+			Toast.makeText(
+					HyyDLApplication.getContext(),
+					HyyDLApplication.getContext().getResources()
+							.getString(R.string.write_first),
+					Toast.LENGTH_SHORT).show();
+			return;
+		}
+
 		Intent intent = new Intent(HyyDLApplication.getContext(),
 				AlarmConfigActivity.class);
+
 		intent.putExtra("messageId", id);
 		this.startActivity(intent);
 	}
@@ -114,16 +134,12 @@ public class EditActivity extends ActionBarActivity {
 	private void findItemById(Long id) {
 		// TODO Auto-generated method stub
 		if (id == -1L) {
-			title = "";
-			shortcut = "";
 			content = "";
 
 		} else {
 			List<Messages> selectedMessage = DatabaseManager.getInstance(
 					HyyDLApplication.getContext()).queryMessageById(id);
 			savedMessage = selectedMessage.get(0);
-			title = selectedMessage.get(0).getTitle();
-			shortcut = selectedMessage.get(0).getShortcut();
 			content = selectedMessage.get(0).getContent();
 		}
 
@@ -131,19 +147,14 @@ public class EditActivity extends ActionBarActivity {
 
 	private void initData() {
 		// TODO Auto-generated method stub
-		etTitle.setText(title);
-		etShortcut.setText(shortcut);
 		etContent.setText(content);
-		
-		//set cursor to last
+
+		// set cursor to last
 		Editable etext = etContent.getText();
 		Selection.setSelection(etext, etext.length());
 	}
 
 	private void init() {
-		// TODO Auto-generated method stub
-		etTitle = (EditText) findViewById(R.id.et_title);
-		etShortcut = (EditText) findViewById(R.id.et_shortcut);
 		etContent = (EditText) findViewById(R.id.et_content);
 	}
 
@@ -157,32 +168,25 @@ public class EditActivity extends ActionBarActivity {
 
 	private boolean saveItem() {
 
-		if (!("".equals(etTitle.getText().toString().trim())
-				&& "".equals(etShortcut.getText().toString().trim()) && ""
-					.equals(etContent.getText().toString()))) {
-			List<Messages> persons = new ArrayList<Messages>();
-
-			// Messages person = new Messages();
+		if (!("".equals(etContent.getText().toString()))) {
 
 			if (-1L == id) {
 				savedMessage = new Messages();
 			}
 
-			savedMessage.setTitle(etTitle.getText().toString());
-			savedMessage.setShortcut(etShortcut.getText().toString());
 			savedMessage.setContent(etContent.getText().toString());
+			savedMessage.setShortcut(HyyCommonUtils.getPokerFaceRandom());
 
-			persons.add(savedMessage);
-
-			DatabaseManager.getInstance(HyyDLApplication.getContext())
-					.saveOrUpdateMessage(persons);
+			id = DatabaseManager.getInstance(HyyDLApplication.getContext())
+					.saveOrUpdateMessage(savedMessage);
 
 			return true;
 
-		} else {
-			Toast.makeText(HyyDLApplication.getContext(), "You input nothing",
-					Toast.LENGTH_SHORT).show();
 		}
+		// else {
+		// Toast.makeText(HyyDLApplication.getContext(), "You input nothing",
+		// Toast.LENGTH_SHORT).show();
+		// }
 		return false;
 
 	}

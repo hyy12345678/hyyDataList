@@ -5,7 +5,7 @@
     <string name="action_settings">设置</string>
     <string name="hello_world">你好世界!</string>
     <string name="add_new">添加</string>
-    <string name="search">查找</string>
+    <string name="search">&#160;查找</string>
     <string name="hint_title">请输入标题</string>
     <string name="hint_shortcut">请输入摘要</string>
     <string name="hint_content">写点什么吧</string>
@@ -27,5 +27,8 @@
 
     <string name="action_alarm">设置提醒</string>
     <string name="action_cont_del">删除</string>
+    
+    <string name="write_first">亲，先写点什么吧</string>
+    <string name="may_add_one">加一个提醒吧，亲</string>
     
 </resources>

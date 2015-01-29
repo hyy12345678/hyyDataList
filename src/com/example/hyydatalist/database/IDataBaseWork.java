@@ -16,7 +16,9 @@ public interface IDataBaseWork {
 	
 	public List<Messages> queryMessageById(Long conditon);
 	
-	public void saveOrUpdateMessage(List<Messages> persons);
+	public void saveOrUpdateMessageList(List<Messages> messages);
+	
+	public Long saveOrUpdateMessage(Messages message);
 	
 	public void deleteMessage(Messages mess);
 	

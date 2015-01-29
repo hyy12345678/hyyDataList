@@ -409,6 +409,7 @@ int string hello_world 0x7f0a000f
 int string hint_content 0x7f0a0014
 int string hint_shortcut 0x7f0a0013
 int string hint_title 0x7f0a0012
+int string may_add_one 0x7f0a0027
 int string pause_alarm 0x7f0a0019
 int string resume_alarm 0x7f0a001a
 int string save_alarm 0x7f0a0015
@@ -416,6 +417,7 @@ int string search 0x7f0a0011
 int string title_activity_alarm_message 0x7f0a0016
 int string toggle_off 0x7f0a001c
 int string toggle_on 0x7f0a001b
+int string write_first 0x7f0a0026
 int style AppBaseTheme 0x7f0b008b
 int style AppTheme 0x7f0b008c
 int style TextAppearance_AppCompat_Base_CompactMenu_Dialog 0x7f0b0063

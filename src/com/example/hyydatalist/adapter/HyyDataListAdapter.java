@@ -28,6 +28,7 @@ import com.example.hyydatalist.R;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.constants.HyyConstants;
 import com.example.hyydatalist.database.DatabaseManager;
+import com.example.hyydatalist.utils.HyyCommonUtils;
 import com.example.hyydatalist.utils.StringTranslateUtil;
 import com.example.hyydatalist.viewholder.ViewHolder;
 import com.hyy.hyydatalist.generator.Alarms;
@@ -96,7 +97,7 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		// divide item check or not,show or hide
 		if (list.get(position).getIsChecked()) {
 
@@ -126,8 +127,9 @@ public class HyyDataListAdapter extends BaseAdapter implements Filterable {
 		String status = list.get(position).getAlarmstatus();
 
 		if (status == null || "".equals(status) || "null".equals(status)) {
-			holder.alarmTime.setText("No Alarm");
-			holder.alarmDay.setText("You may add one");
+			holder.alarmTime.setText(list.get(position).getShortcut());
+			holder.alarmDay.setText(HyyDLApplication.getContext()
+					.getResources().getString(R.string.may_add_one));
 		} else {
 			Alarms alarm = mapAlarms.get(list.get(position).getId());
 

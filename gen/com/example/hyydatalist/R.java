@@ -1310,6 +1310,7 @@ containing a value of this type.
         public static final int hint_content=0x7f0a0014;
         public static final int hint_shortcut=0x7f0a0013;
         public static final int hint_title=0x7f0a0012;
+        public static final int may_add_one=0x7f0a0027;
         public static final int pause_alarm=0x7f0a0019;
         public static final int resume_alarm=0x7f0a001a;
         public static final int save_alarm=0x7f0a0015;
@@ -1317,6 +1318,7 @@ containing a value of this type.
         public static final int title_activity_alarm_message=0x7f0a0016;
         public static final int toggle_off=0x7f0a001c;
         public static final int toggle_on=0x7f0a001b;
+        public static final int write_first=0x7f0a0026;
     }
     public static final class style {
         /** 
