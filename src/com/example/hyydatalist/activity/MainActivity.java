@@ -39,7 +39,11 @@ import com.example.hyydatalist.utils.HyyCommonUtils;
 import com.hyy.hyydatalist.generator.Alarms;
 import com.hyy.hyydatalist.generator.Messages;
 
-@SuppressLint("NewApi")
+/***
+ * Main list page for hyydatalist
+ * @author hyylj
+ *
+ */
 public class MainActivity extends ActionBarActivity {
 
 	ListView listView;
