@@ -41,8 +41,9 @@ import com.hyy.hyydatalist.generator.Messages;
 
 /***
  * Main list page for hyydatalist
+ * 
  * @author hyylj
- *
+ * 
  */
 public class MainActivity extends ActionBarActivity {
 
@@ -60,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
 		init();
 
 		initListener();

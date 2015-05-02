@@ -3,6 +3,8 @@ package com.example.hyydatalist.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.example.hyydatalist.R;
 import com.example.hyydatalist.application.HyyDLApplication;
 import com.example.hyydatalist.database.DatabaseManager;
@@ -10,10 +12,14 @@ import com.hyy.hyydatalist.generator.Alarms;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
@@ -25,7 +31,8 @@ import android.widget.Toast;
  * @author hyylj
  * 
  */
-public class AlarmConfigActivity extends ActionBarActivity {
+public class AlarmConfigActivity extends ActionBarActivity implements
+		OnTouchListener, OnGestureListener {
 
 	TimePicker tp;
 
@@ -60,29 +67,62 @@ public class AlarmConfigActivity extends ActionBarActivity {
 
 	Alarms savedAlarm = null;
 
+	/***
+	 * Gesture Detector
+	 */
+	private GestureDetector mDetector;
+
+	private final int X_MOVE_INSTANCE = 100;// X轴位移距离
+	private final int X_MOVE_SPEED = 100;// X轴移动速度 随便大点都几千
+
+	private LinearLayout my_view;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alarmconfig);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		mDetector = new GestureDetector(this, this);
+		mDetector.setIsLongpressEnabled(true);
 
-		init();
-		initListener();
-		
 		initViews();
+		initListener();
+		inits();
+
+	}
+	
+	private void initViews() {
+		// TODO Auto-generated method stub
+		tp = (TimePicker) findViewById(R.id.tpPicker);
+		tp.setIs24HourView(true);
+		btnSave = (Button) findViewById(R.id.btnSaveAlarm);
+		btnPause = (Button) findViewById(R.id.btnPauseAlarm);
+		btnResume = (Button) findViewById(R.id.btnResumeAlarm);
+
+		tvDay0 = (TextView) findViewById(R.id.day0);
+		tvDay1 = (TextView) findViewById(R.id.day1);
+		tvDay2 = (TextView) findViewById(R.id.day2);
+		tvDay3 = (TextView) findViewById(R.id.day3);
+		tvDay4 = (TextView) findViewById(R.id.day4);
+		tvDay5 = (TextView) findViewById(R.id.day5);
+		tvDay6 = (TextView) findViewById(R.id.day6);
 		
-		
-		
+		my_view = (LinearLayout) findViewById(R.id.ll_alarmconfig_view);
 
 	}
 
-	private void initViews() {
+	private void inits() {
 		// TODO Auto-generated method stub
+		
+		my_view.setLongClickable(true);
+		my_view.setOnTouchListener(this);
+		
+		
 		messageId = getIntent().getLongExtra("messageId", 0);
 		hourOfDay = String.valueOf(tp.getCurrentHour());
 		minute = String.valueOf(tp.getCurrentMinute());
-		
+
 		List<Alarms> saveAlarmLst = DatabaseManager.getInstance(
 				HyyDLApplication.getContext()).queryAlarmById(messageId);
 
@@ -90,15 +130,13 @@ public class AlarmConfigActivity extends ActionBarActivity {
 
 		if (!saveAlarmLst.isEmpty()) {
 			savedAlarm = saveAlarmLst.get(0);
-			if (!(savedAlarm.getAlarmtime() == null || savedAlarm
-					.getAlarmtime().isEmpty())) {
+			if (StringUtils.isNotEmpty(savedAlarm.getAlarmtime())) {
 				String[] times = savedAlarm.getAlarmtime().split(":");
 				tp.setCurrentHour(Integer.valueOf(times[0]));
 				tp.setCurrentMinute(Integer.valueOf(times[1]));
 			}
 
-			if (!(savedAlarm.getDayofweek() == null || savedAlarm
-					.getDayofweek().isEmpty())) {
+			if (StringUtils.isNotEmpty(savedAlarm.getDayofweek())) {
 				String[] days = savedAlarm.getDayofweek().split(":");
 				day0 = days[0];
 				day1 = days[1];
@@ -112,8 +150,7 @@ public class AlarmConfigActivity extends ActionBarActivity {
 
 			}
 
-			if (savedAlarm.getIspause() != null
-					&& !savedAlarm.getIspause().isEmpty()) {
+			if (StringUtils.isNotEmpty(savedAlarm.getIspause())) {
 				if ("0".equals(savedAlarm.getIspause())) {
 					// no pause status,so pause appears
 					btnPause.setVisibility(View.VISIBLE);
@@ -130,7 +167,6 @@ public class AlarmConfigActivity extends ActionBarActivity {
 			tp.setCurrentMinute(0);
 		}
 	}
-
 
 	private void refreshDays() {
 		// TODO Auto-generated method stub
@@ -398,21 +434,68 @@ public class AlarmConfigActivity extends ActionBarActivity {
 		this.minute = String.valueOf(minute);
 	}
 
-	private void init() {
+	
+
+	@Override
+	public boolean onDown(MotionEvent e) {
 		// TODO Auto-generated method stub
-		tp = (TimePicker) findViewById(R.id.tpPicker);
-		tp.setIs24HourView(true);
-		btnSave = (Button) findViewById(R.id.btnSaveAlarm);
-		btnPause = (Button) findViewById(R.id.btnPauseAlarm);
-		btnResume = (Button) findViewById(R.id.btnResumeAlarm);
+		return true;
+	}
 
-		tvDay0 = (TextView) findViewById(R.id.day0);
-		tvDay1 = (TextView) findViewById(R.id.day1);
-		tvDay2 = (TextView) findViewById(R.id.day2);
-		tvDay3 = (TextView) findViewById(R.id.day3);
-		tvDay4 = (TextView) findViewById(R.id.day4);
-		tvDay5 = (TextView) findViewById(R.id.day5);
-		tvDay6 = (TextView) findViewById(R.id.day6);
+	@Override
+	public void onShowPress(MotionEvent e) {
+		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onLongPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		// TODO Auto-generated method stub
+		// 向右划动
+		if ((e2.getX() - e1.getX() > X_MOVE_INSTANCE)
+				&& Math.abs(velocityX) > X_MOVE_SPEED) {
+
+			// 存储数据，并结束，返回
+			this.onPause();
+			this.finish();
+
+			Toast.makeText(HyyDLApplication.getContext(), "You slide right",
+					Toast.LENGTH_SHORT).show();
+			return true;
+
+		} else // 向左划动
+		if ((e1.getX() - e2.getX() > X_MOVE_INSTANCE)
+				&& Math.abs(velocityX) > X_MOVE_SPEED) {
+			Toast.makeText(HyyDLApplication.getContext(), "You slide left",
+					Toast.LENGTH_SHORT).show();
+
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		return mDetector.onTouchEvent(event);
 	}
 }

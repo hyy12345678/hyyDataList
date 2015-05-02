@@ -118,8 +118,6 @@ public class EditActivity extends ActionBarActivity implements OnTouchListener,
 		switch (item.getItemId()) {
 		case R.id.action_alarm:
 
-			// Toast.makeText(HyyDLApplication.getContext(),
-			// "You press Alarm btn!", Toast.LENGTH_SHORT).show();
 			forwardAlarm();
 			return true;
 
@@ -145,17 +143,12 @@ public class EditActivity extends ActionBarActivity implements OnTouchListener,
 		// TODO Auto-generated method stub
 		super.onPrepareOptionsMenu(menu);
 
-		// MenuItem item = menu.getItem(ALARM_MENU);
-		// if (id == -1L) {
-		//
-		// item.setVisible(false);
-		// } else {
-		// item.setVisible(true);
-		// }
-
 		return true;
 	}
 
+	/***
+	 * 跳转到AlarmConfig界面
+	 */
 	private void forwardAlarm() {
 
 		if (-1 == id && !saveItem()) {
@@ -280,15 +273,16 @@ public class EditActivity extends ActionBarActivity implements OnTouchListener,
 
 		Log.i("HYY", "onFling presented");
 
-		Log.i("e2.getX() - e1.getX():", String.valueOf(e2.getX() - e1.getX()));
-		Log.i("X_MOVE_INSTANCE", String.valueOf(X_MOVE_INSTANCE));
-		Log.i("velocityX", String.valueOf(velocityX));
-		Log.i("X_MOVE_SPEED", String.valueOf(X_MOVE_SPEED));
+//		Log.i("e2.getX() - e1.getX():", String.valueOf(e2.getX() - e1.getX()));
+//		Log.i("X_MOVE_INSTANCE", String.valueOf(X_MOVE_INSTANCE));
+//		Log.i("velocityX", String.valueOf(velocityX));
+//		Log.i("X_MOVE_SPEED", String.valueOf(X_MOVE_SPEED));
 
 		// 向右划动
 		if ((e2.getX() - e1.getX() > X_MOVE_INSTANCE)
 				&& Math.abs(velocityX) > X_MOVE_SPEED) {
 
+			//存储数据，并结束，返回
 			this.onPause();
 			this.finish();
 
@@ -301,6 +295,9 @@ public class EditActivity extends ActionBarActivity implements OnTouchListener,
 				&& Math.abs(velocityX) > X_MOVE_SPEED) {
 			Toast.makeText(HyyDLApplication.getContext(), "You slide left",
 					Toast.LENGTH_SHORT).show();
+			//跳转到设置时间界面
+			forwardAlarm();
+			
 		}
 		return false;
 	}
